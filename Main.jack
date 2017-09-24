@@ -1,0 +1,11 @@
+/** program entry point */
+class Main {    
+    function void main() {
+        var Chess chess;
+        let chess = Chess.new();
+        do chess.run();
+        do chess.dispose();
+        
+        return;
+    }
+}

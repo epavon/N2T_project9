@@ -1,0 +1,213 @@
+
+class Chess {
+    field int xStart;
+    field boolean gameEnd;
+    // Clear pieces
+    field Array clearPawns;
+    field Array clearKnights;
+    field Array clearRooks;
+    field Array clearBishops;
+    field Queen clearQueen;
+    field King clearKing;
+    
+    // Stripe pieces
+    field Array stripePawns;
+    field Array stripeKnights;
+    field Array stripeRooks;
+    field Array stripeBishops;
+    field Queen stripeQueen;
+    field King  stripeKing;
+
+    //
+    // Ctor / Dtor
+    //
+    constructor Chess new() {
+        var int i;
+        var Pawn curPawn;      
+
+        let i = 0;
+        let xStart = 122;
+        let gameEnd = false;
+
+        // clear pieces
+        let clearPawns      = Array.new(8);
+        let clearKnights    = Array.new(2);
+        let clearRooks      = Array.new(2);
+        let clearBishops    = Array.new(2);
+
+        let stripePawns     = Array.new(8);
+        let stripeRooks     = Array.new(2);
+        let stripeKnights   = Array.new(2);
+        let stripeBishops   = Array.new(2);
+
+
+        // init pawns
+        while(i < 8) {          
+            // initialize clear pawns
+            let clearPawns[i] = Pawn.new(Point.new(xStart + (32*i), 32), true);
+            // initialize stripe pawns
+            let stripePawns[i] = Pawn.new(Point.new(xStart + (32*i), 192), false);                                  
+            let i = i + 1;
+        }        
+
+        // init rooks
+        let clearRooks[0] = Rook.new(Point.new(xStart, 0), true);
+        let clearRooks[1] = Rook.new(Point.new(xStart + (32*7), 0), true);
+        let stripeRooks[0] = Rook.new(Point.new(xStart, 224), false);
+        let stripeRooks[1] = Rook.new(Point.new(xStart + (32*7), 224), false);
+
+        // init knights
+        let clearKnights[0] = Knight.new(Point.new(xStart + 32, 0), true);
+        let clearKnights[1] = Knight.new(Point.new(xStart + (32* 6), 0), true);
+        let stripeKnights[0] = Knight.new(Point.new(xStart + 32, 224), false);
+        let stripeKnights[1] = Knight.new(Point.new(xStart + (32* 6), 224), false);
+
+        // init bishops
+        let clearBishops[0] = Bishop.new(Point.new(xStart + 64, 0), true);
+        let clearBishops[1] = Bishop.new(Point.new(xStart + (32 * 5), 0), true); 
+        let stripeBishops[0] = Bishop.new(Point.new(xStart + 64, 224), false);
+        let stripeBishops[1] = Bishop.new(Point.new(xStart + (32 * 5), 224), false); 
+
+        // init queens
+        let clearQueen = Queen.new(Point.new(xStart + 128, 0), true);
+        let stripeQueen = Queen.new(Point.new(xStart + 128, 224), false);
+
+        // init kings
+        let clearKing = King.new(Point.new(xStart + 96, 0), true);      
+        let stripeKing = King.new(Point.new(xStart + 96, 224), false);      
+
+        return this;
+    }
+
+    method void dispose() {
+        do clearPawns.dispose();
+        do clearBishops.dispose();
+        do clearKnights.dispose();
+        do clearRooks.dispose();
+        do clearQueen.dispose();
+        do clearKing.dispose();
+        do stripePawns.dispose();
+        do stripeRooks.dispose();
+        do stripeKnights.dispose();
+        do stripeBishops.dispose();
+        do stripeQueen.dispose();
+        do stripeKing.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    //
+    // Methods
+    // 
+    method void run() {
+        do drawBoard();
+        do drawPieces();
+
+        while(~gameEnd) {
+            
+        }
+        return;
+    }
+
+    method void drawPieces() {
+        var int i;
+        var boolean onLight;
+        var Pawn currentPawn;
+        var Knight curKnight;
+        var Rook curRook;
+        var Bishop curBishop;
+        var Queen curQueen;
+        var King curKing;
+
+        // draw pawns
+        let i = 0;
+        let onLight = true;
+        while(i < 8) {
+            let currentPawn = clearPawns[i];
+            do currentPawn.draw(onLight);
+            let currentPawn = stripePawns[i];
+            do currentPawn.draw(~onLight);
+            let i = i + 1;
+            let onLight = ~onLight;
+        }      
+
+        // draw knights
+        let curKnight = clearKnights[0];
+        do curKnight.draw(true);
+        let curKnight = clearKnights[1];
+        do curKnight.draw(false);
+        let curKnight = stripeKnights[0];
+        do curKnight.draw(false);
+        let curKnight = stripeKnights[1];
+        do curKnight.draw(true);
+
+        // draw rooks
+        let curRook = clearRooks[0];
+        do curRook.draw(false);
+        let curRook = clearRooks[1];
+        do curRook.draw(true);
+        let curRook = stripeRooks[0];
+        do curRook.draw(true);
+        let curRook = stripeRooks[1];
+        do curRook.draw(false);
+
+        // draw bishops
+        let curBishop = clearBishops[0];
+        do curBishop.draw(false);
+        let curBishop = clearBishops[1];
+        do curBishop.draw(true);
+        let curBishop = stripeBishops[0];
+        do curBishop.draw(true);
+        let curBishop = stripeBishops[1];
+        do curBishop.draw(false);
+
+        // draw queens
+        do clearQueen.draw(false);
+        do stripeQueen.draw(true);
+
+        // draw kings
+        do clearKing.draw(true);
+        do stripeKing.draw(false);
+
+        return;
+    }
+    
+    method void drawBoard() {
+        var int x, y, curRow, curCol;
+        var int squareSize;
+        var boolean color;
+
+        let curCol = 0;
+        let curRow = 0;
+        let color = true;
+        let squareSize = 32;
+        
+        // Draw squares
+        while(curRow < 8) {
+            while(curCol < 8) {                
+                do Screen.setColor(color);
+                let color = ~color;
+
+                let x = xStart + (curCol * squareSize);
+                let y = curRow * squareSize;
+                do Screen.drawRectangle(x, y, x + squareSize, y + squareSize - 1);
+
+                let curCol = curCol + 1;
+            }
+            let curRow = curRow + 1;
+            let curCol = 0;
+            let color = ~color;
+        }        
+
+        // Draw border
+        do Screen.setColor(true);
+        do Screen.drawLine(xStart, 0, xStart + 256, 0);
+        do Screen.drawLine(xStart, 0, xStart, 255);
+        do Screen.drawLine(xStart, 255, xStart + 256, 255);
+        do Screen.drawLine(xStart + 256, 0, xStart + 256, 255);
+
+        return;
+    }
+
+    
+}

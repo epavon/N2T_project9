@@ -1,0 +1,41 @@
+class Point {
+    field int _x, _y;
+
+    //
+    // Ctor and Dtor
+    constructor Point new(int x, int y) {
+        let _x = x;
+        let _y = y;
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    //
+    // Getters/Setters
+    method int getX() {
+        return _x;
+    } 
+
+    method int getY() {
+        return _y;
+    } 
+
+    method void setX(int x) {
+        let _x = x;
+        return;
+    }
+
+    method void setY(int y) {
+        let _y = y;
+        return;
+    }
+
+    //
+    // Methods
+
+
+}
