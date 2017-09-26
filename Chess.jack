@@ -1,7 +1,30 @@
 
+/**
+ * >>> Description <<<
+ * This class controls the chess game and logic
+ * Board consists of 64 32x32 pixel squares with origin at (122,0)
+ *    _______________________
+ * 1 |__|__|__|__|__|__|__|__|
+ * 2 |__|__|__|__|__|__|__|__|
+ * 3 |__|__|__|__|__|__|__|__|
+ * 4 |__|__|__|__|__|__|__|__|
+ * 5 |__|__|__|__|__|__|__|__|
+ * 6 |__|__|__|__|__|__|__|__|
+ * 7 |__|__|__|__|__|__|__|__|
+ * 8 |__|__|__|__|__|__|__|__|
+ *    A  B  C  D  E  F  G  H  
+ *
+ * >>> Controls <<<
+ * Arrow keys control movement between pieces 
+ * A piece can be selected to be moved by pressing ENTER
+ * Once selected you can use the arrow keys to the new position 
+ * for selected piece.
+ **/
+
 class Chess {
     field int xStart;
     field boolean gameEnd;
+
     // Clear pieces
     field Array clearPawns;
     field Array clearKnights;
@@ -100,11 +123,24 @@ class Chess {
     // Methods
     // 
     method void run() {
+        var char key;
+
         do drawBoard();
         do drawPieces();
+        do ChessPieceHelper.drawMarker(Point.new(xStart + 6, 36), true);
 
         while(~gameEnd) {
-            
+             while (key = 0) {
+                let key = Keyboard.keyPressed();
+                
+            }   
+            if (key = 81)  { let exit = true; }     // q key
+            if (key = 90)  { do square.decSize(); } // z key
+            if (key = 88)  { do square.incSize(); } // x key
+            if (key = 131) { let direction = 1; }   // up arrow
+            if (key = 133) { let direction = 2; }   // down arrow
+            if (key = 130) { let direction = 3; }   // left arrow
+            if (key = 132) { let direction = 4; }   // right arrow
         }
         return;
     }
