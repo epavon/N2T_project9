@@ -3,6 +3,9 @@ class Pawn {
     field boolean _isAlive;
     field Point _position;
 
+	//
+	// Ctor / Dtor
+	// 
     constructor Pawn new(Point position, boolean clearTeam) {
         let _position = position;
         let _clearTeam = clearTeam; 
@@ -16,6 +19,17 @@ class Pawn {
         return;
     }
 
+	//
+	// Getters / Setters
+	// 
+	method Point getPosition() {
+		return _position;
+	}
+
+
+	//
+	// Methods
+	//
     method void draw(boolean onLight) {
         var int location, x, y, xLoc, yLoc;
 

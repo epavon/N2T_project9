@@ -1,37 +1,27 @@
 class ChessPieceHelper {
 
-	function void drawMarker(Point position, boolean onLight) {
-		var int location;
-        let location = (32 * position.getY()) + (position.getX() / 16);   // calc location in mem
-		if(onLight) {
-			do ChessPieceHelper.drawMarkerOnLight(location);
-		}
-		else {
-			do ChessPieceHelper.drawMarkerOnDark(location);
-		}
-		return;
-    }
+	//function Piece getByPosition(Point position) {
+	//	
+	//}
 
-	function void drawMarkerOnLight(int location) {
-        var int memAddress;
-        let memAddress = 16384+location;
-		do Memory.poke(memAddress+0, 9);
-		do Memory.poke(memAddress+32, 10);
-		do Memory.poke(memAddress+64, 12);
-		do Memory.poke(memAddress+96, 15);
-		
-		return;
-    }
+	function boolean onLight(Point point) {
+		var int x, y;
+		let x = point.getX() - 122;
+		let y = point.getY();		
+		 
+		if(MathHelper.modulo(y /32, 2) = 0) {
+			if(MathHelper.modulo(x/32, 2) = 1) {
+				return true;
+			}
+		}
 
-	function void drawMarkerOnDark(int location) {
-		var int memAddress;
-		let memAddress = 16384+location;
-		do Memory.poke(memAddress+0, -10);
-		do Memory.poke(memAddress+32, -11);
-		do Memory.poke(memAddress+64, -13);
-		do Memory.poke(memAddress+96, -16);
-		
-		return;
+		if(MathHelper.modulo(y/32, 2) = 1) {
+			if(MathHelper.modulo(x/32, 2) = 0) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
     function void draw(Point position, boolean clearTeam, boolean onLight) {

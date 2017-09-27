@@ -1,0 +1,102 @@
+class Marker {
+    field Point _position;
+    field boolean _prevPosLight;
+
+    //
+    // Ctors/Dtors
+    //
+    constructor Marker new(Point position) {
+        let _position = position;
+        let _prevPosLight = true;
+        return this;
+    } 
+
+    method void dispose() {
+        do _position.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    //
+    // Getters/Setters
+    //
+    method Point getPosition() {
+        return _position;
+    }
+
+    //
+    // Methods
+    //
+    
+    method void draw(boolean onLight) {
+		var int location;
+
+        let location = (32 * (_position.getY() + 4)) + ((_position.getX() + 6) / 16);   // calc location in mem
+        let _prevPosLight = onLight;
+
+		if(onLight) {
+			do drawMarkerOnLight(location);
+		}
+		else {
+			do drawMarkerOnDark(location);
+		}
+
+        
+		return;
+    }
+
+	method void drawMarkerOnLight(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+		do Memory.poke(memAddress+0, 9);
+		do Memory.poke(memAddress+32, 10);
+		do Memory.poke(memAddress+64, 12);
+		do Memory.poke(memAddress+96, 15);
+		
+		return;
+    }
+
+	method void drawMarkerOnDark(int location) {
+		var int memAddress;
+		let memAddress = 16384+location;
+		do Memory.poke(memAddress+0, -10);
+		do Memory.poke(memAddress+32, -11);
+		do Memory.poke(memAddress+64, -13);
+		do Memory.poke(memAddress+96, -16);
+		
+		return;
+	}
+
+    // @TODO: Do bounds checking
+    method void moveRight() {
+        let _position = Point.new(_position.getX() + 32, _position.getY());
+        do draw(~_prevPosLight);
+
+        return;        
+    }
+
+    method void moveLeft() {
+        let _position = Point.new(_position.getX() - 32, _position.getY());
+        do draw(~_prevPosLight);
+
+        return;
+    }
+
+    method void moveUp() {
+        let _position = Point.new(_position.getX(), _position.getY() - 32);
+        do draw(~_prevPosLight);
+
+        return;
+    }
+
+    method void moveDown() {
+        let _position = Point.new(_position.getX(), _position.getY() + 32);
+        do draw(~_prevPosLight);
+
+        return;
+    }
+
+    
+
+
+}

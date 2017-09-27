@@ -18,12 +18,14 @@
  * Arrow keys control movement between pieces 
  * A piece can be selected to be moved by pressing ENTER
  * Once selected you can use the arrow keys to the new position 
- * for selected piece.
+ * for selected piece and press Enter again to move to desired 
+ * position.
  **/
 
 class Chess {
     field int xStart;
     field boolean gameEnd;
+    field Marker _curPosMarker;
 
     // Clear pieces
     field Array clearPawns;
@@ -51,6 +53,7 @@ class Chess {
         let i = 0;
         let xStart = 122;
         let gameEnd = false;
+        let _curPosMarker = Marker.new(Point.new(xStart, 32));
 
         // clear pieces
         let clearPawns      = Array.new(8);
@@ -124,23 +127,53 @@ class Chess {
     // 
     method void run() {
         var char key;
+        var Pawn curPawn;
+        var Bishop curBishop;
+        var Rook curRook;
+        var Knight curKnight;
+        var King curKing;
+        var Queen curQueen;
 
         do drawBoard();
         do drawPieces();
-        do ChessPieceHelper.drawMarker(Point.new(xStart + 6, 36), true);
+
+        let key = 0;
+        let curPawn = clearPawns[0];
+        
+        do _curPosMarker.draw(ChessPieceHelper.onLight(curPawn.getPosition()));
 
         while(~gameEnd) {
-             while (key = 0) {
-                let key = Keyboard.keyPressed();
-                
+            while (key = 0) {
+                let key = Keyboard.keyPressed();                
             }   
-            if (key = 81)  { let exit = true; }     // q key
-            if (key = 90)  { do square.decSize(); } // z key
-            if (key = 88)  { do square.incSize(); } // x key
-            if (key = 131) { let direction = 1; }   // up arrow
-            if (key = 133) { let direction = 2; }   // down arrow
-            if (key = 130) { let direction = 3; }   // left arrow
-            if (key = 132) { let direction = 4; }   // right arrow
+            
+            if (key = 81)  { let gameEnd = true; }     // q key            
+
+            if (key = 131) {        // up arrow
+                do drawBoard();
+                do drawPieces();
+                do _curPosMarker.moveUp(); 
+            }   
+            if (key = 133) {        // down arrow
+                do drawBoard();
+                do drawPieces();
+                do _curPosMarker.moveDown(); 
+            }   
+            if (key = 130) {        // left arrow
+                do drawBoard();
+                do drawPieces();
+                do _curPosMarker.moveLeft();
+            }   
+            if (key = 132) {        // right arrow
+                do drawBoard();
+                do drawPieces();
+                do _curPosMarker.moveRight(); 
+            }   
+
+            // reset
+            let key = 0;
+
+            do Sys.wait(150);
         }
         return;
     }

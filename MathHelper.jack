@@ -1,0 +1,8 @@
+class MathHelper {
+
+    //
+    // Return x mod y
+    function int modulo(int x, int y) {
+        return x - (x/y * y);
+    }
+}
