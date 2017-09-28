@@ -1,0 +1,657 @@
+class ChessPieceDrawer {
+
+    function void draw(ChessPiece piece, boolean onLight) {    
+        var boolean isClear;
+        var int type;
+        var int location;
+        
+        let isClear     = piece.getIsClear();
+        let type        = piece.getType();
+        let location    = piece.getLocation();
+
+        if(type = 0) {
+            if(onLight) {
+                if(isClear) {
+                    do ChessPieceDrawer.drawKingClearOnLight(location);
+                }
+                else {
+                    do ChessPieceDrawer.drawKingStripeOnLight(location);
+                }
+            }
+            else {
+                if(isClear) {
+                    do ChessPieceDrawer.drawKingClearOnDark(location);      
+                }
+                else {
+                    do ChessPieceDrawer.drawKingStripeOnDark(location);  
+                }       
+            }
+        }
+
+        if(type = 1) {
+            if(onLight) {
+                if(isClear) {
+                    do ChessPieceDrawer.drawQueenClearOnLight(location);
+                }
+                else {
+                    do ChessPieceDrawer.drawQueenStripeOnLight(location);
+                }
+            }
+            else {
+                if(isClear) {
+                    do ChessPieceDrawer.drawQueenClearOnDark(location);      
+                }
+                else {
+                    do ChessPieceDrawer.drawQueenStripeOnDark(location);  
+                }       
+            }
+        }
+
+        if(type = 2) {
+            if(onLight) {
+                if(isClear) {
+                    do ChessPieceDrawer.drawBishopClearOnLight(location);
+                }
+                else {
+                    do ChessPieceDrawer.drawBishopStripeOnLight(location);
+                }
+            }
+            else {
+                if(isClear) {
+                    do ChessPieceDrawer.drawBishopClearOnDark(location);      
+                }
+                else {
+                    do ChessPieceDrawer.drawBishopStripeOnDark(location);  
+                }       
+            }
+        }
+
+        if(type = 3) {
+            if(onLight) {
+                if(isClear) {
+                    do ChessPieceDrawer.drawKnightClearOnLight(location);
+                }
+                else {
+                    do ChessPieceDrawer.drawKnightStripeOnLight(location);
+                }
+            }
+            else {
+                if(isClear) {
+                    do ChessPieceDrawer.drawKnightClearOnDark(location);      
+                }
+                else {
+                    do ChessPieceDrawer.drawKnightStripeOnDark(location);  
+                }       
+            }
+        }
+
+        if(type = 4) {
+            if(onLight) {
+                if(isClear) {
+                    do ChessPieceDrawer.drawRookClearOnLight(location);
+                }
+                else {
+                    do ChessPieceDrawer.drawRookStripeOnLight(location);
+                }
+            }
+            else {
+                if(isClear) {
+                    do ChessPieceDrawer.drawRookClearOnDark(location);      
+                }
+                else {
+                    do ChessPieceDrawer.drawRookStripeOnDark(location);  
+                }       
+            }
+        }
+
+        if(type = 5) {
+            if(onLight) {
+                if(isClear) {
+                    do ChessPieceDrawer.drawPawnClearOnLight(location);
+                }
+                else {
+                    do ChessPieceDrawer.drawPawnStripeOnLight(location);
+                }
+            }
+            else {
+                if(isClear) {
+                    do ChessPieceDrawer.drawPawnClearOnDark(location);      
+                }
+                else {
+                    do ChessPieceDrawer.drawPawnStripeOnDark(location);  
+                }       
+            }
+        }
+
+        return;
+    }
+
+    function void drawPawnClearOnLight(int location) {
+        var int memAddress;
+	    let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, 0);
+	    do Memory.poke(memAddress+32, 960);
+	    do Memory.poke(memAddress+64, 1056);
+	    do Memory.poke(memAddress+96, 2064);
+	    do Memory.poke(memAddress+128, 4104);
+	    do Memory.poke(memAddress+160, 4104);
+	    do Memory.poke(memAddress+192, 2064);
+	    do Memory.poke(memAddress+224, 1632);
+	    do Memory.poke(memAddress+256, 576);
+	    do Memory.poke(memAddress+288, 576);
+	    do Memory.poke(memAddress+320, 576);
+	    do Memory.poke(memAddress+352, 1056);
+	    do Memory.poke(memAddress+384, 2064);
+	    do Memory.poke(memAddress+416, 12300);
+	    do Memory.poke(memAddress+448, 16386);
+	    do Memory.poke(memAddress+480, 32766);
+	    return;
+    }
+
+    function void drawPawnClearOnDark(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, -1);
+	    do Memory.poke(memAddress+32, -961);
+	    do Memory.poke(memAddress+64, -1057);
+	    do Memory.poke(memAddress+96, -2065);
+	    do Memory.poke(memAddress+128, -4105);
+	    do Memory.poke(memAddress+160, -4105);
+	    do Memory.poke(memAddress+192, -2065);
+	    do Memory.poke(memAddress+224, -1633);
+	    do Memory.poke(memAddress+256, -577);
+	    do Memory.poke(memAddress+288, -577);
+	    do Memory.poke(memAddress+320, -577);
+	    do Memory.poke(memAddress+352, -1057);
+	    do Memory.poke(memAddress+384, -2065);
+	    do Memory.poke(memAddress+416, -12301);
+	    do Memory.poke(memAddress+448, -16387);
+	    do Memory.poke(memAddress+480, -32767);
+	    return;
+    }
+
+    function void drawPawnStripeOnLight(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, 0);
+	    do Memory.poke(memAddress+32, 960);
+	    do Memory.poke(memAddress+64, 1056);
+	    do Memory.poke(memAddress+96, 4080);
+	    do Memory.poke(memAddress+128, 4104);
+	    do Memory.poke(memAddress+160, 8184);
+	    do Memory.poke(memAddress+192, 2064);
+	    do Memory.poke(memAddress+224, 2016);
+	    do Memory.poke(memAddress+256, 576);
+	    do Memory.poke(memAddress+288, 960);
+	    do Memory.poke(memAddress+320, 576);
+	    do Memory.poke(memAddress+352, 2016);
+	    do Memory.poke(memAddress+384, 2064);
+	    do Memory.poke(memAddress+416, 8184);
+	    do Memory.poke(memAddress+448, 8196);
+	    do Memory.poke(memAddress+480, 16380);
+	    return;
+    }
+
+    function void drawPawnStripeOnDark(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, -1);
+	    do Memory.poke(memAddress+32, -961);
+	    do Memory.poke(memAddress+64, -1057);
+	    do Memory.poke(memAddress+96, -4081);
+	    do Memory.poke(memAddress+128, -4105);
+	    do Memory.poke(memAddress+160, -8185);
+	    do Memory.poke(memAddress+192, -2065);
+	    do Memory.poke(memAddress+224, -2017);
+	    do Memory.poke(memAddress+256, -577);
+	    do Memory.poke(memAddress+288, -961);
+	    do Memory.poke(memAddress+320, -577);
+	    do Memory.poke(memAddress+352, -2017);
+	    do Memory.poke(memAddress+384, -2065);
+	    do Memory.poke(memAddress+416, -8185);
+	    do Memory.poke(memAddress+448, -8197);
+	    do Memory.poke(memAddress+480, -16381);
+	    return;
+    }
+
+    function void drawKingClearOnLight(int location) {
+        var int memAddress;
+	    let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, 448);
+	    do Memory.poke(memAddress+32, 544);
+	    do Memory.poke(memAddress+64, 448);
+	    do Memory.poke(memAddress+96, 128);
+	    do Memory.poke(memAddress+128, 992);
+	    do Memory.poke(memAddress+160, 2184);
+	    do Memory.poke(memAddress+192, 4088);
+	    do Memory.poke(memAddress+224, 544);
+	    do Memory.poke(memAddress+256, 448);
+	    do Memory.poke(memAddress+288, 128);
+	    do Memory.poke(memAddress+320, 1904);
+	    do Memory.poke(memAddress+352, 320);
+	    do Memory.poke(memAddress+384, 320);
+	    do Memory.poke(memAddress+416, 1584);
+	    do Memory.poke(memAddress+448, 6156);
+	    do Memory.poke(memAddress+480, 8188);
+	    return;
+    }
+
+    function void drawKingClearOnDark(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, -449);
+	    do Memory.poke(memAddress+32, -545);
+	    do Memory.poke(memAddress+64, -449);
+	    do Memory.poke(memAddress+96, -129);
+	    do Memory.poke(memAddress+128, -993);
+	    do Memory.poke(memAddress+160, -2185);
+	    do Memory.poke(memAddress+192, -4089);
+	    do Memory.poke(memAddress+224, -545);
+	    do Memory.poke(memAddress+256, -449);
+	    do Memory.poke(memAddress+288, -129);
+	    do Memory.poke(memAddress+320, -1905);
+	    do Memory.poke(memAddress+352, -321);
+	    do Memory.poke(memAddress+384, -321);
+	    do Memory.poke(memAddress+416, -1585);
+	    do Memory.poke(memAddress+448, -6157);
+	    do Memory.poke(memAddress+480, -8189);
+	    return;
+    }
+
+    function void drawKingStripeOnLight(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, 448);
+	    do Memory.poke(memAddress+32, 672);
+	    do Memory.poke(memAddress+64, 448);
+	    do Memory.poke(memAddress+96, 128);
+	    do Memory.poke(memAddress+128, 992);
+	    do Memory.poke(memAddress+160, 2184);
+	    do Memory.poke(memAddress+192, 4088);
+	    do Memory.poke(memAddress+224, 672);
+	    do Memory.poke(memAddress+256, 448);
+	    do Memory.poke(memAddress+288, 128);
+	    do Memory.poke(memAddress+320, 1904);
+	    do Memory.poke(memAddress+352, 448);
+	    do Memory.poke(memAddress+384, 320);
+	    do Memory.poke(memAddress+416, 2032);
+	    do Memory.poke(memAddress+448, 6156);
+	    do Memory.poke(memAddress+480, 8188);
+	    return;
+    }
+
+    function void drawKingStripeOnDark(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, -449);
+	    do Memory.poke(memAddress+32, -673);
+	    do Memory.poke(memAddress+64, -449);
+	    do Memory.poke(memAddress+96, -129);
+	    do Memory.poke(memAddress+128, -993);
+	    do Memory.poke(memAddress+160, -2185);
+	    do Memory.poke(memAddress+192, -4089);
+	    do Memory.poke(memAddress+224, -673);
+	    do Memory.poke(memAddress+256, -449);
+	    do Memory.poke(memAddress+288, -129);
+	    do Memory.poke(memAddress+320, -1905);
+	    do Memory.poke(memAddress+352, -449);
+	    do Memory.poke(memAddress+384, -321);
+	    do Memory.poke(memAddress+416, -2033);
+	    do Memory.poke(memAddress+448, -6157);
+	    do Memory.poke(memAddress+480, -8189);
+	    return;
+    }
+
+    function void drawBishopClearOnLight(int location) {
+        var int memAddress;
+	    let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, 256);
+	    do Memory.poke(memAddress+32, 896);
+	    do Memory.poke(memAddress+64, 1088);
+	    do Memory.poke(memAddress+96, 2080);
+	    do Memory.poke(memAddress+128, 2080);
+	    do Memory.poke(memAddress+160, 1088);
+	    do Memory.poke(memAddress+192, 640);
+	    do Memory.poke(memAddress+224, 7920);
+	    do Memory.poke(memAddress+256, 640);
+	    do Memory.poke(memAddress+288, 640);
+	    do Memory.poke(memAddress+320, 640);
+	    do Memory.poke(memAddress+352, 1088);
+	    do Memory.poke(memAddress+384, 1088);
+	    do Memory.poke(memAddress+416, 2080);
+	    do Memory.poke(memAddress+448, 12312);
+	    do Memory.poke(memAddress+480, 32764);
+	    return;
+    }
+
+    function void drawBishopClearOnDark(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, -257);
+	    do Memory.poke(memAddress+32, -897);
+	    do Memory.poke(memAddress+64, -1089);
+	    do Memory.poke(memAddress+96, -2081);
+	    do Memory.poke(memAddress+128, -2081);
+	    do Memory.poke(memAddress+160, -1089);
+	    do Memory.poke(memAddress+192, -641);
+	    do Memory.poke(memAddress+224, -7921);
+	    do Memory.poke(memAddress+256, -641);
+	    do Memory.poke(memAddress+288, -641);
+	    do Memory.poke(memAddress+320, -641);
+	    do Memory.poke(memAddress+352, -1089);
+	    do Memory.poke(memAddress+384, -1089);
+	    do Memory.poke(memAddress+416, -2081);
+	    do Memory.poke(memAddress+448, -12313);
+	    do Memory.poke(memAddress+480, -32765);
+	    return;
+    }
+
+    function void drawBishopStripeOnLight(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, 256);
+	    do Memory.poke(memAddress+32, 896);
+	    do Memory.poke(memAddress+64, 1088);
+	    do Memory.poke(memAddress+96, 4064);
+	    do Memory.poke(memAddress+128, 2080);
+	    do Memory.poke(memAddress+160, 1984);
+	    do Memory.poke(memAddress+192, 640);
+	    do Memory.poke(memAddress+224, 7920);
+	    do Memory.poke(memAddress+256, 896);
+	    do Memory.poke(memAddress+288, 640);
+	    do Memory.poke(memAddress+320, 640);
+	    do Memory.poke(memAddress+352, 1984);
+	    do Memory.poke(memAddress+384, 1088);
+	    do Memory.poke(memAddress+416, 4064);
+	    do Memory.poke(memAddress+448, 12312);
+	    do Memory.poke(memAddress+480, 32764);
+	    return;
+    }
+
+    function void drawBishopStripeOnDark(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, -257);
+	    do Memory.poke(memAddress+32, -897);
+	    do Memory.poke(memAddress+64, -1089);
+	    do Memory.poke(memAddress+96, -4065);
+	    do Memory.poke(memAddress+128, -2081);
+	    do Memory.poke(memAddress+160, -1985);
+	    do Memory.poke(memAddress+192, -641);
+	    do Memory.poke(memAddress+224, -7921);
+	    do Memory.poke(memAddress+256, -897);
+	    do Memory.poke(memAddress+288, -641);
+	    do Memory.poke(memAddress+320, -641);
+	    do Memory.poke(memAddress+352, -1985);
+	    do Memory.poke(memAddress+384, -1089);
+	    do Memory.poke(memAddress+416, -4065);
+	    do Memory.poke(memAddress+448, -12313);
+	    do Memory.poke(memAddress+480, -32765);
+	    return;
+    }
+
+    function void drawKnightClearOnLight(int location) {
+        var int memAddress;
+	    let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, 14336);
+	    do Memory.poke(memAddress+32, 9216);
+	    do Memory.poke(memAddress+64, 5888);
+	    do Memory.poke(memAddress+96, 24960);
+	    do Memory.poke(memAddress+128, -16192);
+	    do Memory.poke(memAddress+160, -30688);
+	    do Memory.poke(memAddress+192, -30696);
+	    do Memory.poke(memAddress+224, -26684);
+	    do Memory.poke(memAddress+256, -28612);
+	    do Memory.poke(memAddress+288, -30720);
+	    do Memory.poke(memAddress+320, 17920);
+	    do Memory.poke(memAddress+352, 8576);
+	    do Memory.poke(memAddress+384, 4160);
+	    do Memory.poke(memAddress+416, 4144);
+	    do Memory.poke(memAddress+448, 8200);
+	    do Memory.poke(memAddress+480, 32760);
+	    return;
+    }
+
+    function void drawKnightClearOnDark(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, -14337);
+	    do Memory.poke(memAddress+32, -9217);
+	    do Memory.poke(memAddress+64, -5889);
+	    do Memory.poke(memAddress+96, -24961);
+	    do Memory.poke(memAddress+128, 16191);
+	    do Memory.poke(memAddress+160, 30687);
+	    do Memory.poke(memAddress+192, 30695);
+	    do Memory.poke(memAddress+224, 26683);
+	    do Memory.poke(memAddress+256, 28611);
+	    do Memory.poke(memAddress+288, 30719);
+	    do Memory.poke(memAddress+320, -17921);
+	    do Memory.poke(memAddress+352, -8577);
+	    do Memory.poke(memAddress+384, -4161);
+	    do Memory.poke(memAddress+416, -4145);
+	    do Memory.poke(memAddress+448, -8201);
+	    do Memory.poke(memAddress+480, -32761);
+	    return;
+    }
+
+    function void drawKnightStripeOnLight(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, 14336);
+	    do Memory.poke(memAddress+32, 9216);
+	    do Memory.poke(memAddress+64, 7936);
+	    do Memory.poke(memAddress+96, 24960);
+	    do Memory.poke(memAddress+128, -64);
+	    do Memory.poke(memAddress+160, -30688);
+	    do Memory.poke(memAddress+192, -8);
+	    do Memory.poke(memAddress+224, -24636);
+	    do Memory.poke(memAddress+256, -28612);
+	    do Memory.poke(memAddress+288, -2048);
+	    do Memory.poke(memAddress+320, 17920);
+	    do Memory.poke(memAddress+352, 16256);
+	    do Memory.poke(memAddress+384, 4160);
+	    do Memory.poke(memAddress+416, 8176);
+	    do Memory.poke(memAddress+448, 8200);
+	    do Memory.poke(memAddress+480, 32760);
+	    return;
+    }
+
+    function void drawKnightStripeOnDark(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, -14337);
+	    do Memory.poke(memAddress+32, -9217);
+	    do Memory.poke(memAddress+64, -7937);
+	    do Memory.poke(memAddress+96, -24961);
+	    do Memory.poke(memAddress+128, 63);
+	    do Memory.poke(memAddress+160, 30687);
+	    do Memory.poke(memAddress+192, 7);
+	    do Memory.poke(memAddress+224, 24635);
+	    do Memory.poke(memAddress+256, 28611);
+	    do Memory.poke(memAddress+288, 2047);
+	    do Memory.poke(memAddress+320, -17921);
+	    do Memory.poke(memAddress+352, -16257);
+	    do Memory.poke(memAddress+384, -4161);
+	    do Memory.poke(memAddress+416, -8177);
+	    do Memory.poke(memAddress+448, -8201);
+	    do Memory.poke(memAddress+480, -32761);
+	    return;
+    }
+
+    function void drawQueenClearOnLight(int location) {
+        var int memAddress;
+	    let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, 24844);
+	    do Memory.poke(memAddress+32, -28014);
+	    do Memory.poke(memAddress+64, -29599);
+	    do Memory.poke(memAddress+96, -31679);
+	    do Memory.poke(memAddress+128, -32766);
+	    do Memory.poke(memAddress+160, 16388);
+	    do Memory.poke(memAddress+192, 12296);
+	    do Memory.poke(memAddress+224, 3696);
+	    do Memory.poke(memAddress+256, 9156);
+	    do Memory.poke(memAddress+288, 7224);
+	    do Memory.poke(memAddress+320, 4080);
+	    do Memory.poke(memAddress+352, 576);
+	    do Memory.poke(memAddress+384, 576);
+	    do Memory.poke(memAddress+416, 960);
+	    do Memory.poke(memAddress+448, 2016);
+	    do Memory.poke(memAddress+480, 8184);
+	    return;
+    }
+
+    function void drawQueenClearOnDark(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, -24845);
+	    do Memory.poke(memAddress+32, 28013);
+	    do Memory.poke(memAddress+64, 29598);
+	    do Memory.poke(memAddress+96, 31678);
+	    do Memory.poke(memAddress+128, 32765);
+	    do Memory.poke(memAddress+160, -16389);
+	    do Memory.poke(memAddress+192, -12297);
+	    do Memory.poke(memAddress+224, -3697);
+	    do Memory.poke(memAddress+256, -9157);
+	    do Memory.poke(memAddress+288, -7225);
+	    do Memory.poke(memAddress+320, -4081);
+	    do Memory.poke(memAddress+352, -577);
+	    do Memory.poke(memAddress+384, -577);
+	    do Memory.poke(memAddress+416, -961);
+	    do Memory.poke(memAddress+448, -2017);
+	    do Memory.poke(memAddress+480, -8185);
+	    return;
+    }
+
+    function void drawQueenStripeOnLight(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, 24844);
+	    do Memory.poke(memAddress+32, -28014);
+	    do Memory.poke(memAddress+64, -897);
+	    do Memory.poke(memAddress+96, -30783);
+	    do Memory.poke(memAddress+128, -32766);
+	    do Memory.poke(memAddress+160, 32764);
+	    do Memory.poke(memAddress+192, 12296);
+	    do Memory.poke(memAddress+224, 3696);
+	    do Memory.poke(memAddress+256, 9156);
+	    do Memory.poke(memAddress+288, 7224);
+	    do Memory.poke(memAddress+320, 4080);
+	    do Memory.poke(memAddress+352, 576);
+	    do Memory.poke(memAddress+384, 576);
+	    do Memory.poke(memAddress+416, 960);
+	    do Memory.poke(memAddress+448, 2016);
+	    do Memory.poke(memAddress+480, 8184);
+	    return;
+    }
+
+    function void drawQueenStripeOnDark(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, -24845);
+	    do Memory.poke(memAddress+32, 28013);
+	    do Memory.poke(memAddress+64, 896);
+	    do Memory.poke(memAddress+96, 30782);
+	    do Memory.poke(memAddress+128, 32765);
+	    do Memory.poke(memAddress+160, -32765);
+	    do Memory.poke(memAddress+192, -12297);
+	    do Memory.poke(memAddress+224, -3697);
+	    do Memory.poke(memAddress+256, -9157);
+	    do Memory.poke(memAddress+288, -7225);
+	    do Memory.poke(memAddress+320, -4081);
+	    do Memory.poke(memAddress+352, -577);
+	    do Memory.poke(memAddress+384, -577);
+	    do Memory.poke(memAddress+416, -961);
+	    do Memory.poke(memAddress+448, -2017);
+	    do Memory.poke(memAddress+480, -8185);
+	    return;
+    }
+
+    function void drawRookClearOnLight(int location) {
+        var int memAddress;
+	    let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, 0);
+	    do Memory.poke(memAddress+32, 15342);
+	    do Memory.poke(memAddress+64, 10794);
+	    do Memory.poke(memAddress+96, 11834);
+	    do Memory.poke(memAddress+128, 8194);
+	    do Memory.poke(memAddress+160, 14350);
+	    do Memory.poke(memAddress+192, 2056);
+	    do Memory.poke(memAddress+224, 3640);
+	    do Memory.poke(memAddress+256, 544);
+	    do Memory.poke(memAddress+288, 544);
+	    do Memory.poke(memAddress+320, 544);
+	    do Memory.poke(memAddress+352, 544);
+	    do Memory.poke(memAddress+384, 544);
+	    do Memory.poke(memAddress+416, 15934);
+	    do Memory.poke(memAddress+448, 12294);
+	    do Memory.poke(memAddress+480, 16382);
+	    return;
+    }
+
+    function void drawRookClearOnDark(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, -1);
+	    do Memory.poke(memAddress+32, -15343);
+	    do Memory.poke(memAddress+64, -10795);
+	    do Memory.poke(memAddress+96, -11835);
+	    do Memory.poke(memAddress+128, -8195);
+	    do Memory.poke(memAddress+160, -14351);
+	    do Memory.poke(memAddress+192, -2057);
+	    do Memory.poke(memAddress+224, -3641);
+	    do Memory.poke(memAddress+256, -545);
+	    do Memory.poke(memAddress+288, -545);
+	    do Memory.poke(memAddress+320, -545);
+	    do Memory.poke(memAddress+352, -545);
+	    do Memory.poke(memAddress+384, -545);
+	    do Memory.poke(memAddress+416, -15935);
+	    do Memory.poke(memAddress+448, -12295);
+	    do Memory.poke(memAddress+480, -16383);
+	    return;
+    }
+
+    function void drawRookStripeOnLight(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, 0);
+	    do Memory.poke(memAddress+32, 15342);
+	    do Memory.poke(memAddress+64, 10794);
+	    do Memory.poke(memAddress+96, 12282);
+	    do Memory.poke(memAddress+128, 8194);
+	    do Memory.poke(memAddress+160, 16382);
+	    do Memory.poke(memAddress+192, 2056);
+	    do Memory.poke(memAddress+224, 4088);
+	    do Memory.poke(memAddress+256, 544);
+	    do Memory.poke(memAddress+288, 992);
+	    do Memory.poke(memAddress+320, 544);
+	    do Memory.poke(memAddress+352, 992);
+	    do Memory.poke(memAddress+384, 544);
+	    do Memory.poke(memAddress+416, 16382);
+	    do Memory.poke(memAddress+448, 12294);
+	    do Memory.poke(memAddress+480, 16382);
+	    return;
+    }
+
+    function void drawRookStripeOnDark(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, -1);
+	    do Memory.poke(memAddress+32, -15343);
+	    do Memory.poke(memAddress+64, -10795);
+	    do Memory.poke(memAddress+96, -12283);
+	    do Memory.poke(memAddress+128, -8195);
+	    do Memory.poke(memAddress+160, -16383);
+	    do Memory.poke(memAddress+192, -2057);
+	    do Memory.poke(memAddress+224, -4089);
+	    do Memory.poke(memAddress+256, -545);
+	    do Memory.poke(memAddress+288, -993);
+	    do Memory.poke(memAddress+320, -545);
+	    do Memory.poke(memAddress+352, -993);
+	    do Memory.poke(memAddress+384, -545);
+	    do Memory.poke(memAddress+416, -16383);
+	    do Memory.poke(memAddress+448, -12295);
+	    do Memory.poke(memAddress+480, -16383);
+	    return;
+    }
+
+}

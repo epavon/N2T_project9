@@ -28,96 +28,73 @@ class Chess {
     field Marker _curPosMarker;
 
     // Clear pieces
-    field Array clearPawns;
-    field Array clearKnights;
-    field Array clearRooks;
-    field Array clearBishops;
-    field Queen clearQueen;
-    field King clearKing;
+    field Array clearPieces; 
     
     // Stripe pieces
-    field Array stripePawns;
-    field Array stripeKnights;
-    field Array stripeRooks;
-    field Array stripeBishops;
-    field Queen stripeQueen;
-    field King  stripeKing;
+    field Array stripePieces;
 
     //
     // Ctor / Dtor
     //
     constructor Chess new() {
-        var int i;
+        var int i, pawnType, rookType, kingType, queenType, bishopType, knightType;
         var Pawn curPawn;      
 
-        let i = 0;
-        let xStart = 122;
-        let gameEnd = false;
-        let _curPosMarker = Marker.new(Point.new(xStart, 32));
+        let rookType    = ChessPieceHelper.getRookType();
+        let pawnType    = ChessPieceHelper.getPawnType();
+        let kingType    = ChessPieceHelper.getKingType();
+        let queenType   = ChessPieceHelper.getQueenType();
+        let bishopType  = ChessPieceHelper.getBishopType();
+        let knightType  = ChessPieceHelper.getKnightType();
 
-        // clear pieces
-        let clearPawns      = Array.new(8);
-        let clearKnights    = Array.new(2);
-        let clearRooks      = Array.new(2);
-        let clearBishops    = Array.new(2);
+        let i           = 0;
+        let xStart      = 122;
+        let gameEnd     = false;
 
-        let stripePawns     = Array.new(8);
-        let stripeRooks     = Array.new(2);
-        let stripeKnights   = Array.new(2);
-        let stripeBishops   = Array.new(2);
-
+        let _curPosMarker   = Marker.new(Point.new(xStart, 32));        
+        let clearPieces     = Array.new(16);
+        let stripePieces    = Array.new(16);
 
         // init pawns
-        while(i < 8) {          
-            // initialize clear pawns
-            let clearPawns[i] = Pawn.new(Point.new(xStart + (32*i), 32), true);
-            // initialize stripe pawns
-            let stripePawns[i] = Pawn.new(Point.new(xStart + (32*i), 192), false);                                  
+        while(i < 8) {                    
+            let clearPieces[i] = ChessPiece.new(Point.new(xStart + (32*i), 32), true, pawnType);            
+            let stripePieces[i] = ChessPiece.new(Point.new(xStart + (32*i), 192), false, pawnType); 
             let i = i + 1;
         }        
 
-        // init rooks
-        let clearRooks[0] = Rook.new(Point.new(xStart, 0), true);
-        let clearRooks[1] = Rook.new(Point.new(xStart + (32*7), 0), true);
-        let stripeRooks[0] = Rook.new(Point.new(xStart, 224), false);
-        let stripeRooks[1] = Rook.new(Point.new(xStart + (32*7), 224), false);
+        // init rooks      
+        let clearPieces[8]  = ChessPiece.new(Point.new(xStart, 0), true, rookType);
+        let stripePieces[8] = ChessPiece.new(Point.new(xStart, 224), false, rookType);
+        let clearPieces[9]  = ChessPiece.new(Point.new(xStart + (32*7), 0), true, rookType);
+        let stripePieces[9] = ChessPiece.new(Point.new(xStart + (32*7), 224), false, rookType);
 
         // init knights
-        let clearKnights[0] = Knight.new(Point.new(xStart + 32, 0), true);
-        let clearKnights[1] = Knight.new(Point.new(xStart + (32* 6), 0), true);
-        let stripeKnights[0] = Knight.new(Point.new(xStart + 32, 224), false);
-        let stripeKnights[1] = Knight.new(Point.new(xStart + (32* 6), 224), false);
+        let clearPieces[10]     = ChessPiece.new(Point.new(xStart + 32, 0), true, knightType);
+        let clearPieces[11]     = ChessPiece.new(Point.new(xStart + (32* 6), 0), true, knightType);
+        let stripePieces[10]    = ChessPiece.new(Point.new(xStart + 32, 224), false, knightType);
+        let stripePieces[11]    = ChessPiece.new(Point.new(xStart + (32* 6), 224), false, knightType);
+
 
         // init bishops
-        let clearBishops[0] = Bishop.new(Point.new(xStart + 64, 0), true);
-        let clearBishops[1] = Bishop.new(Point.new(xStart + (32 * 5), 0), true); 
-        let stripeBishops[0] = Bishop.new(Point.new(xStart + 64, 224), false);
-        let stripeBishops[1] = Bishop.new(Point.new(xStart + (32 * 5), 224), false); 
+        let clearPieces[12]     = ChessPiece.new(Point.new(xStart + 64, 0), true, bishopType);
+        let clearPieces[13]     = ChessPiece.new(Point.new(xStart + (32 * 5), 0), true, bishopType); 
+        let stripePieces[12]    = ChessPiece.new(Point.new(xStart + 64, 224), false, bishopType);
+        let stripePieces[13]    = ChessPiece.new(Point.new(xStart + (32 * 5), 224), false, bishopType);
 
         // init queens
-        let clearQueen = Queen.new(Point.new(xStart + 128, 0), true);
-        let stripeQueen = Queen.new(Point.new(xStart + 128, 224), false);
+        let clearPieces[14]     = ChessPiece.new(Point.new(xStart + 128, 0), true, queenType);
+        let stripePieces[14]    = ChessPiece.new(Point.new(xStart + 128, 224), false, queenType);
 
-        // init kings
-        let clearKing = King.new(Point.new(xStart + 96, 0), true);      
-        let stripeKing = King.new(Point.new(xStart + 96, 224), false);      
+        // init kings     
+        let clearPieces[15]     = ChessPiece.new(Point.new(xStart + 96, 0), true, kingType);    
+        let stripePieces[15]    = ChessPiece.new(Point.new(xStart + 96, 224), false, kingType);
 
         return this;
     }
 
     method void dispose() {
-        do clearPawns.dispose();
-        do clearBishops.dispose();
-        do clearKnights.dispose();
-        do clearRooks.dispose();
-        do clearQueen.dispose();
-        do clearKing.dispose();
-        do stripePawns.dispose();
-        do stripeRooks.dispose();
-        do stripeKnights.dispose();
-        do stripeBishops.dispose();
-        do stripeQueen.dispose();
-        do stripeKing.dispose();
+        do clearPieces.dispose();
+        do stripePieces.dispose();        
         do Memory.deAlloc(this);
         return;
     }
@@ -127,26 +104,21 @@ class Chess {
     // 
     method void run() {
         var char key;
-        var Pawn curPawn;
-        var Bishop curBishop;
-        var Rook curRook;
-        var Knight curKnight;
-        var King curKing;
-        var Queen curQueen;
+        var ChessPiece curPiece;        
 
         do drawBoard();
         do drawPieces();
 
         let key = 0;
-        let curPawn = clearPawns[0];
+        let curPiece = clearPieces[0];
         
-        do _curPosMarker.draw(ChessPieceHelper.onLight(curPawn.getPosition()));
+        do _curPosMarker.draw(ChessPieceHelper.onLight(curPiece.getPosition()));
 
         while(~gameEnd) {
             while (key = 0) {
                 let key = Keyboard.keyPressed();                
             }   
-            
+
             if (key = 81)  { let gameEnd = true; }     // q key            
 
             if (key = 131) {        // up arrow
@@ -180,63 +152,17 @@ class Chess {
 
     method void drawPieces() {
         var int i;
-        var boolean onLight;
-        var Pawn currentPawn;
-        var Knight curKnight;
-        var Rook curRook;
-        var Bishop curBishop;
-        var Queen curQueen;
-        var King curKing;
+        var boolean onLight;        
+        var ChessPiece curPiece;
 
-        // draw pawns
-        let i = 0;
-        let onLight = true;
-        while(i < 8) {
-            let currentPawn = clearPawns[i];
-            do currentPawn.draw(onLight);
-            let currentPawn = stripePawns[i];
-            do currentPawn.draw(~onLight);
+        while(i < 16) {
+            let curPiece = clearPieces[i];
+            do ChessPieceDrawer.draw(curPiece, onLight);
+            let curPiece = stripePieces[i];
+            do ChessPieceDrawer.draw(curPiece, ~onLight);
             let i = i + 1;
             let onLight = ~onLight;
-        }      
-
-        // draw knights
-        let curKnight = clearKnights[0];
-        do curKnight.draw(true);
-        let curKnight = clearKnights[1];
-        do curKnight.draw(false);
-        let curKnight = stripeKnights[0];
-        do curKnight.draw(false);
-        let curKnight = stripeKnights[1];
-        do curKnight.draw(true);
-
-        // draw rooks
-        let curRook = clearRooks[0];
-        do curRook.draw(false);
-        let curRook = clearRooks[1];
-        do curRook.draw(true);
-        let curRook = stripeRooks[0];
-        do curRook.draw(true);
-        let curRook = stripeRooks[1];
-        do curRook.draw(false);
-
-        // draw bishops
-        let curBishop = clearBishops[0];
-        do curBishop.draw(false);
-        let curBishop = clearBishops[1];
-        do curBishop.draw(true);
-        let curBishop = stripeBishops[0];
-        do curBishop.draw(true);
-        let curBishop = stripeBishops[1];
-        do curBishop.draw(false);
-
-        // draw queens
-        do clearQueen.draw(false);
-        do stripeQueen.draw(true);
-
-        // draw kings
-        do clearKing.draw(true);
-        do stripeKing.draw(false);
+        }
 
         return;
     }
