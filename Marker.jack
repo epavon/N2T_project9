@@ -28,9 +28,11 @@ class Marker {
     // Methods
     //
     
-    method void draw(boolean onLight) {
+    method void draw() {
 		var int location;
+        var boolean onLight;
 
+        let onLight = ChessPieceHelper.onLight(_position);
         let location = (32 * (_position.getY() + 4)) + ((_position.getX() + 6) / 16);   // calc location in mem
         let _prevPosLight = onLight;
 
@@ -70,33 +72,59 @@ class Marker {
     // @TODO: Do bounds checking
     method void moveRight() {
         let _position = Point.new(_position.getX() + 32, _position.getY());
-        do draw(~_prevPosLight);
+        do draw();
 
         return;        
     }
 
     method void moveLeft() {
         let _position = Point.new(_position.getX() - 32, _position.getY());
-        do draw(~_prevPosLight);
+        do draw();
 
         return;
     }
 
     method void moveUp() {
         let _position = Point.new(_position.getX(), _position.getY() - 32);
-        do draw(~_prevPosLight);
+        do draw();
 
         return;
     }
 
     method void moveDown() {
         let _position = Point.new(_position.getX(), _position.getY() + 32);
-        do draw(~_prevPosLight);
+        do draw();
 
         return;
     }
 
     
+    method ChessPiece select(boolean isClearTurn, Array clearPieces, Array stripePieces) {
+        var int i;
+        var ChessPiece curPiece;
+        var Point curPiecePosition;
 
+        let i = 0;
+
+        while(i < 16) {
+            if(isClearTurn) {
+                let curPiece = clearPieces[i];                
+            } 
+            else {
+                let curPiece = stripePieces[i];
+            }
+
+            let curPiecePosition = curPiece.getPosition();
+            if(curPiecePosition.getX() = _position.getX() ) {
+                if( curPiecePosition.getY() = _position.getY()) {
+                    return curPiece;
+                }
+            }
+
+            let i = i + 1;
+        }
+
+        return null;
+    } 
 
 }

@@ -15,16 +15,18 @@
  *    A  B  C  D  E  F  G  H  
  *
  * >>> Controls <<<
- * Arrow keys control movement between pieces 
- * A piece can be selected to be moved by pressing ENTER
- * Once selected you can use the arrow keys to the new position 
- * for selected piece and press Enter again to move to desired 
- * position.
+ * ARROW KEYS:  control movement between pieces 
+ * SPACEBAR:    A piece can be selected to be moved by pressing SPACEBAR
+ *              Once selected you can use the arrow keys to the new position 
+ *              for selected piece and press Enter again to move to desired 
+ *              position.
+ * X :          To cancel a selection, press X
  **/
 
 class Chess {
     field int xStart;
     field boolean gameEnd;
+    field boolean isClearTurn;
     field Marker _curPosMarker;
 
     // Clear pieces
@@ -50,6 +52,7 @@ class Chess {
         let i           = 0;
         let xStart      = 122;
         let gameEnd     = false;
+        let isClearTurn = true;        
 
         let _curPosMarker   = Marker.new(Point.new(xStart, 32));        
         let clearPieces     = Array.new(16);
@@ -104,23 +107,26 @@ class Chess {
     // 
     method void run() {
         var char key;
-        var ChessPiece curPiece;        
+        var ChessPiece curPiece;    
+        var ChessPiece selectedPiece;    
 
         do drawBoard();
         do drawPieces();
 
         let key = 0;
         let curPiece = clearPieces[0];
+        let selectedPiece = null;
         
-        do _curPosMarker.draw(ChessPieceHelper.onLight(curPiece.getPosition()));
+        do _curPosMarker.draw();
 
         while(~gameEnd) {
             while (key = 0) {
                 let key = Keyboard.keyPressed();                
             }   
 
-            if (key = 81)  { let gameEnd = true; }     // q key            
-
+            if (key = 81)  {        // q key
+                let gameEnd = true; 
+            }     
             if (key = 131) {        // up arrow
                 do drawBoard();
                 do drawPieces();
@@ -141,27 +147,46 @@ class Chess {
                 do drawPieces();
                 do _curPosMarker.moveRight(); 
             }   
+            if(key = 32) {          // Space bar
+                if(selectedPiece = null) {
+                    let selectedPiece = _curPosMarker.select(isClearTurn, clearPieces, stripePieces);
+                }
+                else {
+                    if(~ChessPieceHelper.comparePosition(_curPosMarker.getPosition(), selectedPiece.getPosition())) {
+                        if(ChessPieceHelper.canMove(selectedPiece, _curPosMarker.getPosition(), clearPieces, stripePieces)) {
+                            do selectedPiece.setPosition(_curPosMarker.getPosition());
+                            do drawBoard();
+                            do drawPieces();
+                            let selectedPiece = null;
+                            do _curPosMarker.draw();
+                            let isClearTurn = ~isClearTurn;
+                        }
+                    }
+                }                
+            }
+            if (key = 88)  {        // X key
+                 let selectedPiece = null;
+            }
 
             // reset
             let key = 0;
-
             do Sys.wait(150);
         }
         return;
     }
 
     method void drawPieces() {
-        var int i;
-        var boolean onLight;        
+        var int i;              
         var ChessPiece curPiece;
 
+        let i = 0;
+        
         while(i < 16) {
             let curPiece = clearPieces[i];
-            do ChessPieceDrawer.draw(curPiece, onLight);
+            do ChessPieceDrawer.draw(curPiece, ChessPieceHelper.onLight(curPiece.getPosition()));
             let curPiece = stripePieces[i];
-            do ChessPieceDrawer.draw(curPiece, ~onLight);
-            let i = i + 1;
-            let onLight = ~onLight;
+            do ChessPieceDrawer.draw(curPiece, ChessPieceHelper.onLight(curPiece.getPosition()));
+            let i = i + 1;            
         }
 
         return;
@@ -172,10 +197,10 @@ class Chess {
         var int squareSize;
         var boolean color;
 
-        let curCol = 0;
-        let curRow = 0;
-        let color = true;
-        let squareSize = 32;
+        let curCol      = 0;
+        let curRow      = 0;
+        let color       = true;
+        let squareSize  = 32;
         
         // Draw squares
         while(curRow < 8) {
