@@ -36,6 +36,8 @@ class Point {
 
     //
     // Methods
-
+    method Point add(Point b) {
+        return Point.new(_x + b.getX(), _y + b.getY());
+    }
 
 }
