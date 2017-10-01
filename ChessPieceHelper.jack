@@ -165,32 +165,80 @@ class ChessPieceHelper {
 	}
 
 	function boolean canRookMove(ChessPiece piece, Point desiredPos, Array clearPieces, Array stripePieces) {
-		var ChessPiece pieceInDesiredPos;
-		let pieceInDesiredPos = ChessPieceHelper.getByPosition(clearPieces, stripePieces, desiredPos);
+		var ChessPiece pieceInDesiredPos;	
+		var Point piecePos;
+		var int i;
 
-		if(piece.getIsClear()) {
-			if(desiredPos.getX() = piecePos.getX()) {
-				if(MathHelper.abs(desiredPos.getY() - piecePos.getY()) = 32) {
+		let piecePos = piece.getPosition();				
+
+		if(desiredPos.getX() = piecePos.getX()) {
+			if(desiredPos.getY() > piecePos.getY()) {
+				let i = piecePos.getY() + 32;
+				while(i < desiredPos.getY()) {
+					let pieceInDesiredPos = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(desiredPos.getX(), i));
 					if(~(pieceInDesiredPos = null)) {
-						if(~(pieceInDesiredPos.getIsClear() = piece.getIsClear())) {
-							return true;
-						}
+						return false;
 					}
-					else {
-						return true;
-					}
-
-				}
+					let i = i + 32;
+				}				
 			}
 			else {
+				let i = piecePos.getY() - 32;
+				while(i > desiredPos.getY()) {
+					let pieceInDesiredPos = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(desiredPos.getX(), i));
+					if(~(pieceInDesiredPos = null)) {
+						return false;
+					}
+					let i = i - 32;
+				}				
 			}
-		} 
-		else {
 
+			let pieceInDesiredPos = ChessPieceHelper.getByPosition(clearPieces, stripePieces, desiredPos);
+			if(pieceInDesiredPos = null) {
+				return true;
+			}
+			else {
+				if(~(piece.getIsClear() = pieceInDesiredPos.getIsClear())) {
+					return true;
+				}
+			}
 		}
+		else {
+			if(desiredPos.getY() = piecePos.getY()) {
+				if(desiredPos.getX() > piecePos.getX()) {
+					let i = piecePos.getX() + 32;
+					while(i < desiredPos.getX()) {
+						let pieceInDesiredPos = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(i,desiredPos.getY()));
+						if(~(pieceInDesiredPos = null)) {
+							return false;
+						}
+						let i = i + 32;
+					}				
+				}
+				else {
+					let i = piecePos.getX() - 32;
+					while(i > desiredPos.getX()) {
+						let pieceInDesiredPos = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(i,desiredPos.getY()));
+						if(~(pieceInDesiredPos = null)) {
+							return false;
+						}
+						let i = i - 32;
+					}				
+				}
 
-		return false;
-		
+				let pieceInDesiredPos = ChessPieceHelper.getByPosition(clearPieces, stripePieces, desiredPos);
+				if(pieceInDesiredPos = null) {
+					return true;
+				}
+				else {
+					if(~(piece.getIsClear() = pieceInDesiredPos.getIsClear())) {
+						return true;
+					}
+				}
+			}
+		}		 
+
+		return false;		
 	}
 
 	function boolean canKnightMove(ChessPiece piece, Point desiredPos, Array clearPieces, Array stripePieces) {
@@ -204,6 +252,7 @@ class ChessPieceHelper {
 			if(MathHelper.abs(piecePos.getY() - desiredPos.getY()) = 64) {
 				if(~(pieceInDesiredPos = null)) {
 					if(~(pieceInDesiredPos.getIsClear() = piece.getIsClear())) {
+						do pieceInDesiredPos.setIsAlive(false);
 						return true;
 					}
 				}
@@ -217,6 +266,7 @@ class ChessPieceHelper {
 				if(MathHelper.abs(piecePos.getY() - desiredPos.getY()) = 32) {
 					if(~(pieceInDesiredPos = null)) {
 						if(~(pieceInDesiredPos.getIsClear() = piece.getIsClear())) {
+							do pieceInDesiredPos.setIsAlive(false);
 							return true;
 						}
 					}

@@ -119,7 +119,7 @@ class Chess {
     // Methods
     // 
     method void run() {
-        var char key;
+        var char key;        
         var ChessPiece curPiece;    
         var ChessPiece selectedPiece;    
 
@@ -133,6 +133,28 @@ class Chess {
         do _curPosMarker.draw();
 
         while(~gameEnd) {
+            // Output whose turn it is
+            do Output.moveCursor(1,1);
+            do Output.printString("            ");
+            do Output.moveCursor(1,1);
+            do Output.printString("Turn: ");
+            if(isClearTurn) {
+                do Output.printString("Clear");
+            }
+            else {
+                do Output.printString("Stripe");
+            }
+
+            // Output Controls
+            do Output.moveCursor(1,48);
+            do Output.printString("SPACE:");        
+            do Output.moveCursor(3,48);
+            do Output.printString(" Select/Move");
+            do Output.moveCursor(5, 48);
+            do Output.printString("ARROW KEYS:");
+            do Output.moveCursor(7, 49);
+            do Output.printString("Move piece");
+
             while (key = 0) {
                 let key = Keyboard.keyPressed();                
             }   
