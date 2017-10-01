@@ -28,6 +28,7 @@ class Chess {
     field boolean gameEnd;
     field boolean isClearTurn;
     field Marker _curPosMarker;
+    field Marker _selPosMarker;
 
     // Clear pieces
     field Array clearPieces; 
@@ -54,7 +55,8 @@ class Chess {
         let gameEnd     = false;
         let isClearTurn = true;        
 
-        let _curPosMarker   = Marker.new(Point.new(xStart, 32));        
+        let _curPosMarker   = Marker.new(Point.new(xStart, 32), false);
+        let _selPosMarker   = null;        
         let clearPieces     = Array.new(16);
         let stripePieces    = Array.new(16);
 
@@ -103,6 +105,17 @@ class Chess {
     }
 
     //
+    // Getters/Setters
+    //
+    method Array getClearPiece() {
+        return clearPieces;
+    }
+
+    method Array getStripePieces() {
+        return stripePieces;
+    }
+
+    //
     // Methods
     // 
     method void run() {
@@ -131,25 +144,41 @@ class Chess {
                 do drawBoard();
                 do drawPieces();
                 do _curPosMarker.moveUp(); 
+                if(~(_selPosMarker = null)) {
+                    do _selPosMarker.draw();
+                }
             }   
             if (key = 133) {        // down arrow
                 do drawBoard();
                 do drawPieces();
                 do _curPosMarker.moveDown(); 
+                if(~(_selPosMarker = null)) {
+                    do _selPosMarker.draw();
+                }
             }   
             if (key = 130) {        // left arrow
                 do drawBoard();
                 do drawPieces();
                 do _curPosMarker.moveLeft();
+                if(~(_selPosMarker = null)) {
+                    do _selPosMarker.draw();
+                }
             }   
             if (key = 132) {        // right arrow
                 do drawBoard();
                 do drawPieces();
                 do _curPosMarker.moveRight(); 
+                if(~(_selPosMarker = null)) {
+                    do _selPosMarker.draw();
+                }
             }   
             if(key = 32) {          // Space bar
                 if(selectedPiece = null) {
                     let selectedPiece = _curPosMarker.select(isClearTurn, clearPieces, stripePieces);
+                    if(~(selectedPiece = null)) {
+                        let _selPosMarker = Marker.new(selectedPiece.getPosition(), true);
+                        do _selPosMarker.draw();
+                    }
                 }
                 else {
                     if(~ChessPieceHelper.comparePosition(_curPosMarker.getPosition(), selectedPiece.getPosition())) {
@@ -157,15 +186,22 @@ class Chess {
                             do selectedPiece.setPosition(_curPosMarker.getPosition());
                             do drawBoard();
                             do drawPieces();
-                            let selectedPiece = null;
                             do _curPosMarker.draw();
+
+                            //do selectedPiece.dispose();
+                            let selectedPiece = null;
+                            do _selPosMarker.dispose();
+                            let _selPosMarker = null;
+                            
                             let isClearTurn = ~isClearTurn;
                         }
                     }
                 }                
             }
-            if (key = 88)  {        // X key
-                 let selectedPiece = null;
+            if (key = 88)  {        // X key                
+                let selectedPiece = null;
+                do _selPosMarker.dispose();
+                let _selPosMarker = null;
             }
 
             // reset
@@ -183,9 +219,14 @@ class Chess {
         
         while(i < 16) {
             let curPiece = clearPieces[i];
-            do ChessPieceDrawer.draw(curPiece, ChessPieceHelper.onLight(curPiece.getPosition()));
+            if(curPiece.getIsAlive()) {
+                do ChessPieceDrawer.draw(curPiece, ChessPieceHelper.onLight(curPiece.getPosition()));
+            }
+
             let curPiece = stripePieces[i];
-            do ChessPieceDrawer.draw(curPiece, ChessPieceHelper.onLight(curPiece.getPosition()));
+            if(curPiece.getIsAlive()) {
+                do ChessPieceDrawer.draw(curPiece, ChessPieceHelper.onLight(curPiece.getPosition()));
+            }
             let i = i + 1;            
         }
 

@@ -12,17 +12,22 @@ class ChessPiece {
     // absolute drawing position in the board in pixels
     field Point _position;
 
+    // keep track of previous position
+    field Point _prevPosition;
+
     // type of chess piece: king = 0, queen = 1, bishop = 2, knight = 3, rook = 4, pawn = 5
     field int _type;       
 
     // whether piece is in its initial position, good for pawn movement
     field boolean _inInitialPos;     
 
+
 	//
 	// Ctor / Dtor
 	// 
     constructor ChessPiece new(Point position, boolean clearTeam, int type) {
         let _position       = position;
+        let _prevPosition   = position;
         let _clearTeam      = clearTeam; 
         let _isAlive        = true;
         let _type           = type;
@@ -32,6 +37,7 @@ class ChessPiece {
 
     method void dispose() {
         do _position.dispose();
+        do _prevPosition.dispose();
         do Memory.deAlloc(this);
         return;
     }
@@ -44,8 +50,18 @@ class ChessPiece {
 	}
 
     method void setPosition(Point newPosition) {
-        let _inInitialPos = false;
-        let _position = newPosition;
+        let _inInitialPos   = false;
+        let _prevPosition   = _position;
+        let _position       = newPosition;
+        return;
+    }
+
+    method Point getPrevPosition() {
+        return _prevPosition;
+    }
+
+    method void setPrevPosition(Point prevPosition) {
+        let _prevPosition = prevPosition;
         return;
     }
 
@@ -59,6 +75,15 @@ class ChessPiece {
 
     method boolean getInInitialPos() {
         return _inInitialPos;
+    }
+
+    method boolean getIsAlive() {
+        return _isAlive;
+    }
+
+    method void setIsAlive(boolean isAlive) {
+        let _isAlive = isAlive;
+        return;
     }
 
 	//

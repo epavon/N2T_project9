@@ -1,13 +1,15 @@
 class Marker {
     field Point _position;
     field boolean _prevPosLight;
+    field boolean _isSelMarker;
 
     //
     // Ctors/Dtors
     //
-    constructor Marker new(Point position) {
-        let _position = position;
-        let _prevPosLight = true;
+    constructor Marker new(Point position, boolean isSelMarker) {
+        let _position       = position;
+        let _prevPosLight   = true;
+        let _isSelMarker    = isSelMarker;
         return this;
     } 
 
@@ -37,10 +39,20 @@ class Marker {
         let _prevPosLight = onLight;
 
 		if(onLight) {
-			do drawMarkerOnLight(location);
+            if(~_isSelMarker) {
+			    do drawMarkerOnLight(location);
+            }
+            else {
+                do drawSelMarkerOnLight(location);
+            }
 		}
 		else {
-			do drawMarkerOnDark(location);
+            if(~_isSelMarker) {
+			    do drawMarkerOnDark(location);
+            }
+            else {
+                do drawSelMarkerOnDark(location);
+            }
 		}
 
         
@@ -68,6 +80,26 @@ class Marker {
 		
 		return;
 	}
+
+    method void drawSelMarkerOnLight(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, -28672);
+	    do Memory.poke(memAddress+32, 20480);
+	    do Memory.poke(memAddress+64, 12288);
+	    do Memory.poke(memAddress+96, -4096);
+        return;
+    }
+
+    method void drawSelMarkerOnDark(int location) {
+        var int memAddress;
+        let memAddress = 16384+location;
+	    do Memory.poke(memAddress+0, 28671);
+	    do Memory.poke(memAddress+32, -20481);
+	    do Memory.poke(memAddress+64, -12289);
+	    do Memory.poke(memAddress+96, 4095);
+        return;
+    }
 
     // @TODO: Do bounds checking
     method void moveRight() {
@@ -99,31 +131,16 @@ class Marker {
     }
 
     
-    method ChessPiece select(boolean isClearTurn, Array clearPieces, Array stripePieces) {
-        var int i;
-        var ChessPiece curPiece;
-        var Point curPiecePosition;
+    method ChessPiece select(boolean isClearTurn, Array clearPieces, Array stripePieces) {    
+        var ChessPiece selectedPiece;
 
-        let i = 0;
-
-        while(i < 16) {
-            if(isClearTurn) {
-                let curPiece = clearPieces[i];                
-            } 
-            else {
-                let curPiece = stripePieces[i];
+        let selectedPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, _position);
+        if(~(selectedPiece = null)) {
+            if(isClearTurn = selectedPiece.getIsClear()) {
+                return selectedPiece;
             }
-
-            let curPiecePosition = curPiece.getPosition();
-            if(curPiecePosition.getX() = _position.getX() ) {
-                if( curPiecePosition.getY() = _position.getY()) {
-                    return curPiece;
-                }
-            }
-
-            let i = i + 1;
         }
-
+        
         return null;
     } 
 
