@@ -146,6 +146,10 @@ class Chess {
         do Output.printString("X:");
         do Output.moveCursor(11, 49);
         do Output.printString("Cancel select");
+        do Output.moveCursor(13, 48);
+        do Output.printString("Q:");
+        do Output.moveCursor(15, 49);
+        do Output.printString("Quit/Exit");
 
         while(~gameEnd) {
             // Output whose turn it is

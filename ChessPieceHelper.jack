@@ -369,9 +369,13 @@ class ChessPieceHelper {
 	}
 
 	function boolean canKingMove(ChessPiece piece, Point desiredPos, Array clearPieces, Array stripePieces) {
+		var int desiredPosX, desiredPosY;
 		var Point piecePos;
 		var ChessPiece pieceInDesiredPos;
+		var ChessPiece rookPiece;
 
+		let desiredPosX = desiredPos.getX();
+		let desiredPosY = desiredPos.getY();
 		let piecePos = piece.getPosition(); 
 		let pieceInDesiredPos = ChessPieceHelper.getByPosition(clearPieces, stripePieces, desiredPos);
 
@@ -417,9 +421,35 @@ class ChessPieceHelper {
 		}
 
 		// Handle castle
+		if(desiredPosX = (piecePos.getX() - 64)) {
+			let pieceInDesiredPos = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(piecePos.getX() - 32, piecePos.getY()));
+			if(pieceInDesiredPos = null) {
+				let pieceInDesiredPos = ChessPieceHelper.getByPosition(clearPieces, stripePieces, desiredPos);
+				if(pieceInDesiredPos = null) {
+					let rookPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(desiredPosX - 32, desiredPosY));
+					if( (~(rookPiece = null)) & (rookPiece.getType() = ChessPieceHelper.getRookType()) ) {
+						if(rookPiece.getInInitialPos() & piece.getInInitialPos()) {
+							do ChessPieceHelper.drawSquare(rookPiece.getPosition());
+							do rookPiece.setPosition(Point.new(desiredPosX + 32, desiredPosY));
+							do rookPiece.draw(ChessPieceHelper.onLight(rookPiece.getPosition()));
+							return true;
+						}
+					}
+				}
+			}
+		}
 
 		return false;
 	}
+
+	function void drawSquare(Point position) {
+        var int x, y;
+        let x = position.getX();
+        let y = position.getY();
+        do Screen.setColor(~ChessPieceHelper.onLight(position));
+        do Screen.drawRectangle(x, y, x + 32, y + 32 - 1);
+        return;
+    }
 
 	function int getPawnType() {
 		return 5;
