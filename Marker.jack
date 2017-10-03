@@ -14,7 +14,7 @@ class Marker {
     } 
 
     method void dispose() {
-        do _position.dispose();
+        //do _position.dispose();
         do Memory.deAlloc(this);
         return;
     }

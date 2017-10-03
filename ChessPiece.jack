@@ -36,8 +36,8 @@ class ChessPiece {
     }
 
     method void dispose() {
-        do _position.dispose();
-        do _prevPosition.dispose();
+        //do _position.dispose();
+        //do _prevPosition.dispose();
         do Memory.deAlloc(this);
         return;
     }

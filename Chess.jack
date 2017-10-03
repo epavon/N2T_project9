@@ -142,6 +142,10 @@ class Chess {
         do Output.printString("ARROW KEYS:");
         do Output.moveCursor(7, 49);
         do Output.printString("Move piece");
+        do Output.moveCursor(9, 48);
+        do Output.printString("X:");
+        do Output.moveCursor(11, 49);
+        do Output.printString("Cancel select");
 
         while(~gameEnd) {
             // Output whose turn it is
@@ -249,10 +253,15 @@ class Chess {
                     }
                 }                
             }
-            if (key = 88)  {        // X key                
-                let selectedPiece = null;
-                do _selPosMarker.dispose();
-                let _selPosMarker = null;
+            if (key = 88)  {        // X key 
+                if(~(selectedPiece = null)) {
+                    do drawSquare(selectedPiece.getPosition());
+                    do selectedPiece.draw(ChessPieceHelper.onLight(selectedPiece.getPosition()));
+                    //do selectedPiece.dispose();
+                    let selectedPiece = null;                
+                    do _selPosMarker.dispose();
+                    let _selPosMarker = null;
+                }
             }
 
             // reset
