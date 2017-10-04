@@ -24,9 +24,10 @@
  **/
 
 class Chess {
-    field int xStart;
+    static int xStart;
     field boolean gameEnd;
     field boolean isClearTurn;
+    field boolean inCheck;
     field Marker _curPosMarker;
     field Marker _selPosMarker;
 
@@ -53,6 +54,7 @@ class Chess {
         let i           = 0;
         let xStart      = 122;
         let gameEnd     = false;
+        let inCheck     = false;
         let isClearTurn = true;        
 
         let _curPosMarker   = Marker.new(Point.new(xStart, 32), false);
@@ -115,6 +117,10 @@ class Chess {
         return stripePieces;
     }
 
+    function int getXStart() {
+        return xStart;
+    }
+
     //
     // Methods
     // 
@@ -151,22 +157,26 @@ class Chess {
         do Output.moveCursor(15, 49);
         do Output.printString("Quit/Exit");
 
+        // GAME LOOP
         while(~gameEnd) {
             // Output whose turn it is
             do Screen.setColor(false);
-            do Screen.drawRectangle(0,0,xStart, 20);
+            do Screen.drawRectangle(0,0,xStart-1, 80);
             do Output.moveCursor(1,1);
-            do Output.printString("Turn: ");
-
-            let curPos = _curPosMarker.getPosition();
-
+            do Output.printString("Turn: ");            
+            
             if(isClearTurn) {
                 do Output.printString("Clear");
             }
             else {
                 do Output.printString("Stripe");
-            }            
+            }   
+            if(inCheck) {
+                do Output.moveCursor(4,2);
+                do Output.printString("CHECK!");
+            }         
 
+            let curPos = _curPosMarker.getPosition();
             while (key = 0) {
                 let key = Keyboard.keyPressed();                
             }   
@@ -176,7 +186,7 @@ class Chess {
             }     
             if (key = 131) {        // up arrow  
                 if(~(curPos.getY() = 0)) {
-                    do drawSquare(curPos);
+                    do ChessPieceHelper.drawSquare(curPos);
                     do drawBorder();
                     let curPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, curPos);
                     if(~(curPiece = null)) {
@@ -191,7 +201,7 @@ class Chess {
             }   
             if (key = 133) {        // down arrow   
                 if(~(curPos.getY() = (32*7))) {          
-                    do drawSquare(curPos);
+                    do ChessPieceHelper.drawSquare(curPos);
                     do drawBorder();
                     let curPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, curPos);
                     if(~(curPiece = null)) {
@@ -205,7 +215,7 @@ class Chess {
             }   
             if (key = 130) {        // left arrow
                 if(~(curPos.getX() = xStart)) {
-                    do drawSquare(curPos);
+                    do ChessPieceHelper.drawSquare(curPos);
                     do drawBorder();
                     let curPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, curPos);
                     if(~(curPiece = null)) {
@@ -219,7 +229,7 @@ class Chess {
             }   
             if (key = 132) {        // right arrow
                 if(~(curPos.getX() = (xStart + (32*7)))) {
-                    do drawSquare(curPos);
+                    do ChessPieceHelper.drawSquare(curPos);
                     do drawBorder();
                     let curPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, curPos);
                     if(~(curPiece = null)) {
@@ -242,10 +252,15 @@ class Chess {
                 else {
                     if(~ChessPieceHelper.comparePosition(curPos, selectedPiece.getPosition())) {
                         if(ChessPieceHelper.canMove(selectedPiece, curPos, clearPieces, stripePieces)) {
-                            do drawSquare(selectedPiece.getPosition());
+                            do ChessPieceHelper.drawSquare(selectedPiece.getPosition());
                             do drawBorder();
                             do selectedPiece.setPosition(curPos);
                             do selectedPiece.draw(ChessPieceHelper.onLight(selectedPiece.getPosition()));
+                            if(ChessPieceHelper.checkForCheck(selectedPiece, clearPieces, stripePieces)) {
+                                let inCheck = true;
+                            } else {
+                                let inCheck = false;
+                            }
 
                             do _curPosMarker.draw();                            
                             let selectedPiece = null;
@@ -259,7 +274,7 @@ class Chess {
             }
             if (key = 88)  {        // X key 
                 if(~(selectedPiece = null)) {
-                    do drawSquare(selectedPiece.getPosition());
+                    do ChessPieceHelper.drawSquare(selectedPiece.getPosition());
                     do selectedPiece.draw(ChessPieceHelper.onLight(selectedPiece.getPosition()));
                     //do selectedPiece.dispose();
                     let selectedPiece = null;                
@@ -339,13 +354,6 @@ class Chess {
         return;
     }
 
-    method void drawSquare(Point position) {
-        var int x, y;
-        let x = position.getX();
-        let y = position.getY();
-        do Screen.setColor(~ChessPieceHelper.onLight(position));
-        do Screen.drawRectangle(x, y, x + 32, y + 32 - 1);
-        return;
-    }
+    
     
 }

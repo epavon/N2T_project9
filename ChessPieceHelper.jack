@@ -420,7 +420,7 @@ class ChessPieceHelper {
 			}
 		}
 
-		// Handle castle
+		// Handle castling
 		if(desiredPosX = (piecePos.getX() - 64)) {
 			let pieceInDesiredPos = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(piecePos.getX() - 32, piecePos.getY()));
 			if(pieceInDesiredPos = null) {
@@ -450,6 +450,109 @@ class ChessPieceHelper {
         do Screen.drawRectangle(x, y, x + 32, y + 32 - 1);
         return;
     }
+
+	function void drawBorder() {
+        do Screen.setColor(true);
+        do Screen.drawLine(Chess.getXStart(), 0, Chess.getXStart() + 256, 0);
+        do Screen.drawLine(Chess.getXStart(), 0, Chess.getXStart(), 255);
+        do Screen.drawLine(Chess.getXStart(), 255, Chess.getXStart() + 256, 255);
+        do Screen.drawLine(Chess.getXStart() + 256, 0, Chess.getXStart() + 256, 255);
+        return;
+    }
+
+	function boolean checkForCheck(ChessPiece piece, Array clearPieces, Array stripePieces) {
+		if(piece.getType() = ChessPieceHelper.getPawnType()) {
+			return ChessPieceHelper.checkPawnForCheck(piece, clearPieces, stripePieces);
+		}
+		if(piece.getType() = ChessPieceHelper.getRookType()) {
+			return ChessPieceHelper.checkRookForCheck(piece, clearPieces, stripePieces);
+		}
+		if(piece.getType() = ChessPieceHelper.getKnightType()) {
+			return ChessPieceHelper.checkKnightForCheck(piece, clearPieces, stripePieces);
+		}
+		if(piece.getType() = ChessPieceHelper.getBishopType()) {
+			return ChessPieceHelper.checkBishopForCheck(piece, clearPieces, stripePieces);
+		}
+		if(piece.getType() = ChessPieceHelper.getQueenType()) {
+			return ChessPieceHelper.checkQueenForCheck(piece, clearPieces, stripePieces);
+		}
+		
+		return false;
+	}
+
+	function boolean checkPawnForCheck(ChessPiece piece, Array clearPieces, Array stripePieces) {
+		var ChessPiece opposingKing;
+		var Point oppKingPos;
+		var Point piecePos;
+
+		let piecePos = piece.getPosition();
+		if(piece.getIsClear()) {
+			let opposingKing = stripePieces[15];
+			let oppKingPos = opposingKing.getPosition();
+
+			if( MathHelper.abs(piecePos.getX() - oppKingPos.getX()) = 32 ) {
+				if(oppKingPos.getY() - piecePos.getY() = 32) {
+					return true;
+				}
+			}
+		}
+		else {
+			let opposingKing = clearPieces[15];
+			let oppKingPos = opposingKing.getPosition();
+
+			if( MathHelper.abs(piecePos.getX() - oppKingPos.getX()) = 32 ) {
+				if(piecePos.getY() - oppKingPos.getY() = 32) {
+					return true;
+				}
+			}
+		}		
+
+		return false;
+	}
+
+	function boolean checkRookForCheck(ChessPiece piece, Array clearPieces, Array stripePieces) {
+		return false;
+	}
+
+	function boolean checkKnightForCheck(ChessPiece piece,Array clearPieces, Array stripePieces) {
+		var ChessPiece opposingKing;		
+		var Point oppKingPos;
+		var Point piecePos;		
+
+		let piecePos = piece.getPosition();
+		if(piece.getIsClear()) {
+			let opposingKing = stripePieces[15];
+			let oppKingPos = opposingKing.getPosition();			
+		}
+		else {
+			let opposingKing = clearPieces[15];
+			let oppKingPos = opposingKing.getPosition();			
+		}		
+
+		if(MathHelper.abs(piecePos.getX() - oppKingPos.getX()) = 32) {
+			if(MathHelper.abs(piecePos.getY() - oppKingPos.getY()) = 64) {
+				return true;
+			}
+		}
+		else {
+			if(MathHelper.abs(piecePos.getX() - oppKingPos.getX()) = 64) {
+				if(MathHelper.abs(piecePos.getY() - oppKingPos.getY()) = 32) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	function boolean checkBishopForCheck(ChessPiece piece, Array clearPieces, Array stripePieces) {
+		return false;
+	}
+
+	function boolean checkQueenForCheck(ChessPiece piece, Array clearPieces, Array stripePieces) {
+		return false;
+	}
+	
 
 	function int getPawnType() {
 		return 5;
