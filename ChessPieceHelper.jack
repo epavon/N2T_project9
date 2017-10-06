@@ -686,6 +686,11 @@ class ChessPieceHelper {
 	}
 
 	function boolean checkQueenForCheck(ChessPiece piece, Array clearPieces, Array stripePieces) {
+		if(ChessPieceHelper.checkBishopForCheck(piece, clearPieces, stripePieces) | 
+			ChessPieceHelper.checkRookForCheck(piece, clearPieces, stripePieces)) {
+			return true;
+		}
+
 		return false;
 	}
 	

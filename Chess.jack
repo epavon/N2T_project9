@@ -128,7 +128,8 @@ class Chess {
         var char key;        
         var ChessPiece curPiece;    
         var ChessPiece selectedPiece; 
-        var Point curPos;   
+        var Point curPos; 
+        var int i;  
 
         do drawBoard();
         do drawPieces();
@@ -250,24 +251,33 @@ class Chess {
                     }
                 }
                 else {
-                    if(~ChessPieceHelper.comparePosition(curPos, selectedPiece.getPosition())) {
+                    if(~ChessPieceHelper.comparePosition(curPos, selectedPiece.getPosition())) {                        
                         if(ChessPieceHelper.canMove(selectedPiece, curPos, clearPieces, stripePieces)) {
-                            do ChessPieceHelper.drawSquare(selectedPiece.getPosition());
-                            do drawBorder();
                             do selectedPiece.setPosition(curPos);
-                            do selectedPiece.draw(ChessPieceHelper.onLight(selectedPiece.getPosition()));
-                            if(ChessPieceHelper.checkForCheck(selectedPiece, clearPieces, stripePieces)) {
-                                let inCheck = true;
-                            } else {
-                                let inCheck = false;
-                            }
 
-                            do _curPosMarker.draw();                            
-                            let selectedPiece = null;
-                            do _selPosMarker.dispose();
-                            let _selPosMarker = null;
-                            
-                            let isClearTurn = ~isClearTurn;
+                            if(checkForCheck(selectedPiece.getIsClear())) {
+                                do selectedPiece.setPosition(_selPosMarker.getPosition());
+                            }
+                            else {
+                                do ChessPieceHelper.drawSquare(_selPosMarker.getPosition());
+                                do drawBorder();
+                                //do selectedPiece.setPosition(curPos);
+                                do selectedPiece.draw(ChessPieceHelper.onLight(selectedPiece.getPosition()));
+
+                                // Check for check
+                                if(checkForCheck(~selectedPiece.getIsClear())) {
+                                    let inCheck = true;
+                                } else {
+                                    let inCheck = false;
+                                }
+
+                                do _curPosMarker.draw();                            
+                                let selectedPiece = null;
+                                do _selPosMarker.dispose();
+                                let _selPosMarker = null;
+
+                                let isClearTurn = ~isClearTurn;
+                            }
                         }
                     }
                 }                
@@ -288,6 +298,30 @@ class Chess {
             do Sys.wait(150);
         }
         return;
+    }
+
+    method boolean checkForCheck(boolean isClearKing) {
+        var Array attPieces;
+        var ChessPiece curPiece;
+        var int i;
+
+        let i = 0;        
+        if(isClearKing) {
+            let attPieces = stripePieces;            
+        }
+        else {
+            let attPieces = clearPieces;
+        }
+
+        while(i < 16) {
+            let curPiece = attPieces[i];
+            if(ChessPieceHelper.checkForCheck(curPiece, clearPieces, stripePieces)) {
+                return true;
+            }
+            let i = i + 1;
+        }
+
+        return false;
     }
 
     method void drawPieces() {
