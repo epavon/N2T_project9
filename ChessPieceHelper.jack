@@ -517,7 +517,7 @@ class ChessPieceHelper {
 		var ChessPiece oppKing;
 		var Point piecePos;
 		var Point oppKingPos;
-		var int i, n;
+		var int i;
 
 		let piecePos = piece.getPosition();		
 		if(piece.getIsClear()) {
@@ -529,8 +529,7 @@ class ChessPieceHelper {
 			let oppKingPos = oppKing.getPosition();			
 		}	
 
-		if(piecePos.getX() = oppKingPos.getX()) {
-			let n = MathHelper.abs(oppKingPos.getY() - piecePos.getY());
+		if(piecePos.getX() = oppKingPos.getX()) {			
 			if(piecePos.getY() > oppKingPos.getY()) {
 				let i = piecePos.getY() - 32;
 				while(i > oppKingPos.getY()) {
@@ -555,8 +554,7 @@ class ChessPieceHelper {
 			}
 		} 
 		else {
-			if(piecePos.getY() = oppKingPos.getY()) {
-				let n = MathHelper.abs(oppKingPos.getX() - piecePos.getX());
+			if(piecePos.getY() = oppKingPos.getY()) {				
 				if(piecePos.getX() > oppKingPos.getX()) {
 					let i = piecePos.getX() - 32;
 					while(i > oppKingPos.getX()) {
@@ -617,6 +615,73 @@ class ChessPieceHelper {
 	}
 
 	function boolean checkBishopForCheck(ChessPiece piece, Array clearPieces, Array stripePieces) {
+		var ChessPiece nextPiece;
+		var ChessPiece oppKing;
+		var Point piecePos;
+		var Point oppKingPos;
+		var int i, n;
+
+		let piecePos = piece.getPosition();		
+		if(piece.getIsClear()) {
+			let oppKing = stripePieces[15];
+			let oppKingPos = oppKing.getPosition();			
+		}
+		else {
+			let oppKing = clearPieces[15];
+			let oppKingPos = oppKing.getPosition();			
+		}	
+
+		if(MathHelper.abs(piecePos.getX() - oppKingPos.getX()) = MathHelper.abs(piecePos.getY() - oppKingPos.getY()) ) {
+			if(piecePos.getY() > oppKingPos.getY()) {
+				if(piecePos.getX() > oppKingPos.getX()) {
+					let i = 1;
+					while((piecePos.getX() - (32*i)) > oppKingPos.getX()) {
+						let nextPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(piecePos.getX() - (32*i), piecePos.getY() - (32*i)));
+						if(~(nextPiece = null)) {
+							return false;			
+						}
+						let i = i + 1;
+					}
+					return true;
+				}
+				else {
+					let i = 1;
+					while((piecePos.getX() + (32*i)) < oppKingPos.getX()) {
+						let nextPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(piecePos.getX() + (32*i), piecePos.getY() - (32*i)));
+						if(~(nextPiece = null)) {
+							return false;			
+						}
+						let i = i + 1;
+					}
+					return true;
+				}
+			}
+			else {
+				if(piecePos.getX() > oppKingPos.getX()) {
+					let i = 1;
+					while((piecePos.getX() - (32*i)) > oppKingPos.getX()) {
+						let nextPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(piecePos.getX() - (32*i), piecePos.getY() + (32*i)));
+						if(~(nextPiece = null)) {
+							return false;			
+						}
+						let i = i + 1;
+					}
+					return true;
+				}
+				else {
+					let i = 1;
+					while((piecePos.getX() + (32*i)) < oppKingPos.getX()) {
+						let nextPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(piecePos.getX() + (32*i), piecePos.getY() + (32*i)));
+						if(~(nextPiece = null)) {
+							return false;			
+						}
+						let i = i + 1;
+					}
+					return true;
+				}
+			}
+		}
+
 		return false;
 	}
 
