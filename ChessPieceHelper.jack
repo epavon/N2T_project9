@@ -427,12 +427,14 @@ class ChessPieceHelper {
 				let pieceInDesiredPos = ChessPieceHelper.getByPosition(clearPieces, stripePieces, desiredPos);
 				if(pieceInDesiredPos = null) {
 					let rookPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(desiredPosX - 32, desiredPosY));
-					if( (~(rookPiece = null)) & (rookPiece.getType() = ChessPieceHelper.getRookType()) ) {
-						if(rookPiece.getInInitialPos() & piece.getInInitialPos()) {
-							do ChessPieceHelper.drawSquare(rookPiece.getPosition());
-							do rookPiece.setPosition(Point.new(desiredPosX + 32, desiredPosY));
-							do rookPiece.draw(ChessPieceHelper.onLight(rookPiece.getPosition()));
-							return true;
+					if(~(rookPiece = null)) {
+						if(rookPiece.getType() = ChessPieceHelper.getRookType()) {
+							if(rookPiece.getInInitialPos() & piece.getInInitialPos()) {
+								do ChessPieceHelper.drawSquare(rookPiece.getPosition());
+								do rookPiece.setPosition(Point.new(desiredPosX + 32, desiredPosY));
+								do rookPiece.draw(ChessPieceHelper.onLight(rookPiece.getPosition()));
+								return true;
+							}
 						}
 					}
 				}
@@ -511,22 +513,91 @@ class ChessPieceHelper {
 	}
 
 	function boolean checkRookForCheck(ChessPiece piece, Array clearPieces, Array stripePieces) {
+		var ChessPiece nextPiece;
+		var ChessPiece oppKing;
+		var Point piecePos;
+		var Point oppKingPos;
+		var int i, n;
+
+		let piecePos = piece.getPosition();		
+		if(piece.getIsClear()) {
+			let oppKing = stripePieces[15];
+			let oppKingPos = oppKing.getPosition();			
+		}
+		else {
+			let oppKing = clearPieces[15];
+			let oppKingPos = oppKing.getPosition();			
+		}	
+
+		if(piecePos.getX() = oppKingPos.getX()) {
+			let n = MathHelper.abs(oppKingPos.getY() - piecePos.getY());
+			if(piecePos.getY() > oppKingPos.getY()) {
+				let i = piecePos.getY() - 32;
+				while(i > oppKingPos.getY()) {
+					let nextPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(piecePos.getX(), i));
+					if(~(nextPiece = null)) {
+						return false;
+					}
+					let i = i - 32;
+				}
+				return true;
+			}
+			else {
+				let i = piecePos.getY() + 32;
+				while(i < oppKingPos.getY()) {
+					let nextPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(piecePos.getX(), i));
+					if(~(nextPiece = null)) {
+						return false;
+					}
+					let i = i + 32;
+				}
+				return true;
+			}
+		} 
+		else {
+			if(piecePos.getY() = oppKingPos.getY()) {
+				let n = MathHelper.abs(oppKingPos.getX() - piecePos.getX());
+				if(piecePos.getX() > oppKingPos.getX()) {
+					let i = piecePos.getX() - 32;
+					while(i > oppKingPos.getX()) {
+						let nextPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(i, piecePos.getY()));
+						if(~(nextPiece = null)) {
+							return false;
+						}
+						let i = i - 32;
+					}
+					return true;
+				}
+				else {
+					let i = piecePos.getX() + 32;
+					while(i < oppKingPos.getX()) {
+						let nextPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, Point.new(i, piecePos.getY()));
+						if(~(nextPiece = null)) {
+							return false;
+						}
+						let i = i + 32;
+					}
+					return true;
+				}
+			}
+		}
+
 		return false;
 	}
 
 	function boolean checkKnightForCheck(ChessPiece piece,Array clearPieces, Array stripePieces) {
-		var ChessPiece opposingKing;		
+		var ChessPiece oppKing;		
 		var Point oppKingPos;
 		var Point piecePos;		
 
 		let piecePos = piece.getPosition();
 		if(piece.getIsClear()) {
-			let opposingKing = stripePieces[15];
-			let oppKingPos = opposingKing.getPosition();			
+			let oppKing = stripePieces[15];
+			let oppKingPos = oppKing.getPosition();			
 		}
 		else {
-			let opposingKing = clearPieces[15];
-			let oppKingPos = opposingKing.getPosition();			
+			let oppKing = clearPieces[15];
+			let oppKingPos = oppKing.getPosition();			
 		}		
 
 		if(MathHelper.abs(piecePos.getX() - oppKingPos.getX()) = 32) {
