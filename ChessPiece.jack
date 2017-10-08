@@ -20,6 +20,7 @@ class ChessPiece {
 
     // whether piece is in its initial position, good for pawn movement
     field boolean _inInitialPos;     
+    field boolean _prevInitialPos;
 
 
 	//
@@ -32,6 +33,7 @@ class ChessPiece {
         let _isAlive        = true;
         let _type           = type;
         let _inInitialPos   = true;
+        let _prevInitialPos = true;
         return this;
     }
 
@@ -49,10 +51,11 @@ class ChessPiece {
 		return _position;
 	}
 
-    method void setPosition(Point newPosition) {
-        let _inInitialPos   = false;
+    method void setPosition(Point newPosition) {        
         let _prevPosition   = _position;
-        let _position       = newPosition;
+        let _prevInitialPos = _inInitialPos;
+        let _position       = newPosition;        
+        let _inInitialPos   = false;
         return;
     }
 
@@ -89,6 +92,12 @@ class ChessPiece {
 	//
 	// Methods
 	//
+
+    method void undoMove() {
+        let _inInitialPos = _prevInitialPos;
+        let _position = _prevPosition;
+        return;
+    }
 
     method int getLocation() {
         var int location, x, y, xLoc, yLoc;

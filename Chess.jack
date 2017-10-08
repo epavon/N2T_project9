@@ -253,12 +253,19 @@ class Chess {
                 else {
                     if(~ChessPieceHelper.comparePosition(curPos, selectedPiece.getPosition())) {                        
                         if(ChessPieceHelper.canMove(selectedPiece, curPos, clearPieces, stripePieces)) {
+                            let curPiece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, curPos);
+                            if(~(curPiece = null)) {
+                                do curPiece.setIsAlive(false);
+                            }
                             do selectedPiece.setPosition(curPos);
 
                             if(checkForCheck(selectedPiece.getIsClear())) {
-                                do selectedPiece.setPosition(_selPosMarker.getPosition());
+                                do selectedPiece.undoMove();
+                                if(~(curPiece = null)) {
+                                    do curPiece.setIsAlive(true);
+                                } 
                             }
-                            else {
+                            else {                                                           
                                 do ChessPieceHelper.drawSquare(_selPosMarker.getPosition());
                                 do drawBorder();
                                 //do selectedPiece.setPosition(curPos);
@@ -315,8 +322,10 @@ class Chess {
 
         while(i < 16) {
             let curPiece = attPieces[i];
-            if(ChessPieceHelper.checkForCheck(curPiece, clearPieces, stripePieces)) {
-                return true;
+            if(curPiece.getIsAlive()) {
+                if(ChessPieceHelper.checkForCheck(curPiece, clearPieces, stripePieces)) {
+                    return true;
+                }
             }
             let i = i + 1;
         }
