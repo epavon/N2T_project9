@@ -72,8 +72,13 @@ class ChessPiece {
         return _clearTeam;
     }
 
-    method boolean getType() {
+    method int getType() {
         return _type;
+    }
+
+    method void setType(int type) {
+        let _type = type;
+        return;
     }
 
     method boolean getInInitialPos() {
@@ -110,11 +115,14 @@ class ChessPiece {
         return location;
     }
 
-    method void draw(boolean onLight) {
+    method void draw() {
+        var boolean onLight;
+        let onLight = ChessPieceHelper.onLight(getPosition());
         do ChessPieceDrawer.draw(this, onLight);
-        
         return;
     }
+
+    
 
     
 }

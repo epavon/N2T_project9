@@ -39,7 +39,7 @@ class ChessPieceHelper {
 		let piece = ChessPieceHelper.getByPosition(clearPieces, stripePieces, position);
 
 		if(~(piece = null)) {
-			do piece.draw(ChessPieceHelper.onLight(position));
+			do piece.draw();
 		}
 
 		return;
@@ -432,7 +432,7 @@ class ChessPieceHelper {
 							if(rookPiece.getInInitialPos() & piece.getInInitialPos()) {
 								do ChessPieceHelper.drawSquare(rookPiece.getPosition());
 								do rookPiece.setPosition(Point.new(desiredPosX + 32, desiredPosY));
-								do rookPiece.draw(ChessPieceHelper.onLight(rookPiece.getPosition()));
+								do rookPiece.draw();
 								return true;
 							}
 						}
@@ -694,6 +694,27 @@ class ChessPieceHelper {
 		return false;
 	}
 	
+
+	function boolean didPawnMakeIt(ChessPiece pawn) {
+		var Point pawnPos;
+		var boolean pawnClearTeam;
+
+		let pawnPos = pawn.getPosition();
+		let pawnClearTeam = pawn.getIsClear();
+
+		if(pawnClearTeam) {
+			if(pawnPos.getY() = (32*7)) {
+				return true;
+			}
+		} 
+		else {
+			if(pawnPos.getY() = 0) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	function int getPawnType() {
 		return 5;
