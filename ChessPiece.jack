@@ -1,3 +1,5 @@
+//
+// This class represents a chess piece, i.e: pawn, queen, etc..
 class ChessPiece {
     //
     // Fields

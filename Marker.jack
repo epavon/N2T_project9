@@ -1,3 +1,5 @@
+//
+// This class represents a marker showing where the current cursor is and which piece is selected
 class Marker {
     field Point _position;
     field boolean _prevPosLight;

@@ -1,3 +1,5 @@
+//
+// This static class simply draws..
 class ChessPieceDrawer {
 
     function void draw(ChessPiece piece, boolean onLight) {    

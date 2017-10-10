@@ -1,3 +1,5 @@
+//
+// This static class offers a few extensions to math library that may prove useful
 class MathHelper {
 
     //

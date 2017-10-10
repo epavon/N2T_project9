@@ -1,3 +1,5 @@
+//
+// This static class does most of the logic that handles chess piece logic and board logic
 class ChessPieceHelper {
 
 	function ChessPiece getByPosition(Array clearPieces, Array stripePieces, Point position) {

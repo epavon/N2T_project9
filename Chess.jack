@@ -23,6 +23,9 @@
  * X :          To cancel a selection, press X
  **/
 
+//
+// This class orchestrates the entire game LOOP
+//
 class Chess {
     static int xStart;
     field boolean gameEnd;

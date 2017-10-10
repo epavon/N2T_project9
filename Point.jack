@@ -1,3 +1,5 @@
+//
+// This class represents a point in 2D space, mostly used for getting position
 class Point {
     field int _x, _y;
 
